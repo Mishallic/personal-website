@@ -1,9 +1,8 @@
 .cliRoot{
     background: #111;
     overflow-y: visible;
-    overflow-x: hidden;
     height: 100%;
-    overflow-anchor: none;
+    width:100%;
 }
 .cliWrapper {
     overflow-anchor: none;

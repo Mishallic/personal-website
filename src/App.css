@@ -1,6 +1,32 @@
 .App {
 }
 
-.rootProot {
-    height: 100vh;
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+#left_panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 66vw;
+}
+
+#right_panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width:33vw
+}
+
+#drag {
+    position: absolute;
+    left: -4px;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: w-resize;
 }

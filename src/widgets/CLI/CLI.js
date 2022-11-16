@@ -41,8 +41,10 @@ const CLI = () => {
         textareaRef.current?.scrollIntoView({behavior: 'auto'})
     }, [log])
 
+
+    const cliRef = useRef();
     return (
-        <div className='cliRoot' onClick={globalClickHandler}>
+        <div ref={cliRef} className='cliRoot' onClick={globalClickHandler}>
             <div className='cliLog'>
                 <Log entries={log}/>
             </div>
