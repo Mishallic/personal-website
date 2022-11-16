@@ -1,6 +1,5 @@
 import './styles/cliMain.css'
 import {useEffect, useRef, useState} from "react";
-import entered from "../../helpers/textEnter";
 import Log from "./Log";
 
 const CLI = () => {

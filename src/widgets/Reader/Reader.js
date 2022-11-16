@@ -1,4 +1,5 @@
 import './ReaderStyles.css'
+
 const Reader = (props) => {
     return(
         <div className='readerRoot'>
