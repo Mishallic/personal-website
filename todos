@@ -1,3 +1,4 @@
-log rerender on input
-always focus textarea
-cursor bar
+issue: log rerender on input
+issue: cant hold highlight
+enhancement: fix styling
+feature: cursor bar

@@ -1,10 +1,10 @@
 import './ReaderStyles.css'
 
-const Reader = (props) => {
+const Reader = ({name, content}) => {
     return(
         <div className='readerRoot'>
-            {props.children}
-            <div className="content">Reader</div>
+            <div className="content">{name}</div>
+            {content}
         </div>
     )
 }

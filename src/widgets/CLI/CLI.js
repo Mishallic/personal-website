@@ -1,10 +1,12 @@
 import './styles/cliMain.css'
 import {useEffect, useRef, useState} from "react";
 import Log from "./Log";
+import {useDispatch} from "react-redux";
+import {addLog, closeReader, openReader} from "../../store/main/mainSlice";
 
-const CLI = () => {
+const CLI = ({log}) => {
+    const dispatch = useDispatch();
     const [activeText, setActiveText] = useState('');
-    const [log, setLog] = useState([]);
     const textareaRef = useRef();
 
     const activeTextChangeHandler = ({target}) => setActiveText(target.value);
@@ -25,10 +27,14 @@ const CLI = () => {
 
     const lineBreakHandler = ({key, target}) => {
         if (key !== 'Enter') return;
-        const command = constructCommand(target.value)
-        setLog(prevState => ([...prevState, command]));
+        const command = constructCommand(target.value);
+        dispatch(addLog(command))
+        if(target.value === 'cat')
+            dispatch(openReader())
+        if(target.value === 'catnt')
+            dispatch(closeReader())
+        // setLog(prevState => ([...prevState, command]));
         setActiveText('');
-
     }
 
     const globalClickHandler = (e) => {
