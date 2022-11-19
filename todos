@@ -2,3 +2,52 @@ issue: log rerender on input
 issue: cant hold highlight
 enhancement: fix styling
 feature: cursor bar
+
+
+allowed commands: ls cd cat quit! help? gui
+
+ls: pwd structure
+cd: move in directories
+quit: close
+help: display commands
+gui: changes mode
+cat: read file
+
+about: about me
+projects: my projects
+blog: my blog
+links: my handles
+
+
+
+directories: {
+    home:{
+        type:directory,
+        children: {
+            projects:{
+                type:directory,
+                children:{
+                    project1:{},
+                    project2:{},
+                    project3:{},
+                }
+            },
+            blog:{
+                type:directory,
+                children:{
+                    blog1:{},
+                    blog2:{},
+                    blog3:{},
+                }
+            },
+            about:{
+                type:file,
+                editable: false
+            },
+            links:{
+                type:file,
+                editable:false
+            }
+        }
+    }
+}

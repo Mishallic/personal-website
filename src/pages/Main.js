@@ -1,7 +1,8 @@
-import CLI from "../widgets/CLI/CLI";
-import Reader from "../widgets/Reader/Reader";
+import CLI from "../features/CLI/CLI";
+import Reader from "../features/Reader/Reader";
 import {useSelector} from "react-redux";
 import {useEffect} from "react";
+import CMDProcessor from "../features/CMDProcessor/CMDProcessor";
 
 const RootPage = () => {
     const {logEntries, reader} = useSelector(state => state.main);
@@ -35,10 +36,10 @@ const RootPage = () => {
             </div>
             {
                 reader.state === 'open' &&
-                <div id="right_panel">
-                    <div id="drag"></div>
-                    <Reader name={reader.name} content={reader.content}/>
-                </div>
+                    <div id="right_panel">
+                        <div id="drag"></div>
+                        <Reader name={reader.name} content={reader.content}/>
+                    </div>
             }
         </div>
     )

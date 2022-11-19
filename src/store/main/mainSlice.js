@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 // import {addEntry} from "./apis";
+import structure from "../structure.json";
 
 const initialState = {
     logEntries: [],
@@ -7,7 +8,12 @@ const initialState = {
         name: 'Reader',
         content: 'content',
         state: 'close'
-    }
+    },
+    cmd: '',
+    newCmd: true,
+    pwd: structure.root,
+    pwdPath: 'root/projects/project1',
+    dirRoot: structure.root
 }
 
 export const mainSlice = createSlice({
@@ -25,10 +31,17 @@ export const mainSlice = createSlice({
         },
         hideReader: state => {
             state.reader = {...state.reader, state: 'close'}
+        },
+        updatePWD: (state, action) => {
+            state.pwd = action.payload;
+        },
+        updateCMD: (state, action) => {
+            state.newCmd = !state.newCmd;
+            state.cmd = action.payload;
         }
     }
 })
-const {addSuccess, fetchSuccess, showReader, hideReader} = mainSlice.actions
+const {addSuccess, fetchSuccess, showReader, hideReader, updatePWD, updateCMD} = mainSlice.actions
 export default mainSlice.reducer;
 
 export const addLog = (logEntry) => async dispatch => {
@@ -54,4 +67,22 @@ export const openReader = () => dispatch => {
 
 export const closeReader = () => dispatch => {
     return dispatch(hideReader())
+}
+
+export const changePath = (dirName) => dispatch => {
+    return dispatch(updatePWD(dirName));
+}
+
+export const changePathBack = () => (dispatch, getState) => {
+    const {main: {pwdPath, dirRoot}} = getState();
+    // console.log(pwdPath.split('/'))
+    const pathArr = pwdPath.split('/');
+    let newPWD;
+    for (let i = 1; i < pathArr.length - 1; i++)
+        newPWD = dirRoot.children[pathArr[i]];
+    return dispatch(updatePWD(newPWD))
+}
+
+export const changeCMD = (cmd) => dispatch => {
+    return dispatch(updateCMD(cmd));
 }
