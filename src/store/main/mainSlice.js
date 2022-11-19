@@ -11,7 +11,7 @@ const initialState = {
     },
     cmd: '',
     newCmd: true,
-    pwd: structure.root,
+    pwd: structure.root.children.projects.children.project1,
     pwdPath: 'root/projects/project1',
     dirRoot: structure.root
 }
@@ -33,15 +33,20 @@ export const mainSlice = createSlice({
             state.reader = {...state.reader, state: 'close'}
         },
         updatePWD: (state, action) => {
-            state.pwd = action.payload;
+            state.pwd = action.payload.pwd;
+            state.pwdPath = action.payload.path
         },
         updateCMD: (state, action) => {
             state.newCmd = !state.newCmd;
             state.cmd = action.payload;
+        },
+        resetPath: state => {
+            state.pwdPath = 'root';
+            state.pwd = structure.root
         }
     }
 })
-const {addSuccess, fetchSuccess, showReader, hideReader, updatePWD, updateCMD} = mainSlice.actions
+const {addSuccess, fetchSuccess, showReader, hideReader, updatePWD, updateCMD, resetPath} = mainSlice.actions
 export default mainSlice.reducer;
 
 export const addLog = (logEntry) => async dispatch => {
@@ -69,18 +74,23 @@ export const closeReader = () => dispatch => {
     return dispatch(hideReader())
 }
 
-export const changePath = (dirName) => dispatch => {
-    return dispatch(updatePWD(dirName));
+export const changePath = (newPWD, newPwdPath) => dispatch => {
+    return dispatch(updatePWD({pwd: newPWD, path: newPwdPath}));
 }
 
 export const changePathBack = () => (dispatch, getState) => {
     const {main: {pwdPath, dirRoot}} = getState();
-    // console.log(pwdPath.split('/'))
     const pathArr = pwdPath.split('/');
     let newPWD;
     for (let i = 1; i < pathArr.length - 1; i++)
         newPWD = dirRoot.children[pathArr[i]];
-    return dispatch(updatePWD(newPWD))
+    const newPwdPath = pathArr.slice(0, -1).join('/')
+    if(newPwdPath === 'root')
+        newPWD = dirRoot;
+    return dispatch(updatePWD({pwd: newPWD, path: newPwdPath}))
+}
+export const resetPWD = () => dispatch => {
+    return dispatch(resetPath())
 }
 
 export const changeCMD = (cmd) => dispatch => {
