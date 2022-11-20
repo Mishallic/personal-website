@@ -52,7 +52,6 @@ const CMDProcessor = ({children}) => {
                 if (('children' in pwd) && Object.keys(pwd.children).includes(cmdTarget))
                     return Object.keys(pwd.children[cmdTarget].children);
                 break;
-            // case "quit":
             case "cat":
                 if (!cmdTarget)
                     return ''
@@ -99,7 +98,6 @@ const CMDProcessor = ({children}) => {
         dispatch(addLog(cmdObject))
     };
 
-    // return response
     useEffect(() => {
         if (!cmd) return;
         constructCmdObj(cmd, checkCmd(cmd));
