@@ -2,10 +2,13 @@ issue: log rerender on input
 issue: cant hold highlight
 enhancement: fix styling
 feature: cursor bar
-
+feature: auto complete on tab
+feature: log history [done]
 
 prepare for content for blog
 psuedo complete projects
+
+
 
 
 

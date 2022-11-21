@@ -5,8 +5,7 @@ import {useEffect} from "react";
 import CMDProcessor from "../features/CMDProcessor/CMDProcessor";
 
 const RootPage = () => {
-    const {logEntries, reader} = useSelector(state => state.main);
-
+    const {logEntries, logHistoryIndex, reader} = useSelector(state => state.main);
     useEffect(() => {
         let isResizing = false;
         (function () {
@@ -32,14 +31,14 @@ const RootPage = () => {
     return (
         <div id="container">
             <div id="left_panel" style={{width: reader.state === 'open' ? '66vw' : '100vw'}}>
-                <CLI log={logEntries}/>
+                <CLI log={logEntries} logHistoryIndex={logHistoryIndex}/>
             </div>
             {
                 reader.state === 'open' &&
-                    <div id="right_panel">
-                        <div id="drag"></div>
-                        <Reader name={reader.name} content={reader.content}/>
-                    </div>
+                <div id="right_panel">
+                    <div id="drag"></div>
+                    <Reader name={reader.name} content={reader.content}/>
+                </div>
             }
         </div>
     )

@@ -7,9 +7,7 @@ import {addLog, changePath, changePathBack, closeReader, openReader, resetPWD} f
 
 const CMDProcessor = ({children}) => {
     const dispatch = useDispatch();
-    const {cmd, newCmd, pwd, pwdPath} = useSelector(state => state.main)
-    console.log(pwd)
-    console.log(pwdPath)
+    const {cmd, newCmd, pwd, pwdPath} = useSelector(state => state.main);
     const checkCmd = (cmd) => {
         const cmdArr = cmd.split(' ')
         const cmdKeyword = cmdArr[0];
@@ -26,17 +24,25 @@ const CMDProcessor = ({children}) => {
     const cmdSwitch = (cmdKeyword, cmdTarget) => {
         switch (cmdKeyword) {
             case "cd":
-                if (!cmdTarget) dispatch(resetPWD())
+                if (!cmdTarget) {
+                    dispatch(resetPWD());
+                    return;
+                }
                 if (cmdTarget === '..') {
-                    if (pwdPath !== 'root') dispatch(changePathBack())
-                    else return;
+                    if (pwdPath !== 'root') {
+                        dispatch(changePathBack());
+                        return
+                    } else return;
                 } else {
-                    if (!(children in pwd) || !Object.keys(pwd.children) || !Object.keys(pwd.children).includes(cmdTarget))
+                    if (!('children' in pwd) || !Object.keys(pwd.children) || !Object.keys(pwd.children).includes(cmdTarget))
                         return 'Directory ' + cmdTarget + " doesn't exist";
+                    else if (pwd.children[cmdTarget].type !== 'dir')
+                        return cmdTarget + ' is not a directory'
                     else {
                         const newPwd = pwd.children[cmdTarget];
                         const newPwdPath = pwdPath + '/' + cmdTarget;
                         dispatch(changePath(newPwd, newPwdPath));
+                        return;
                     }
                 }
                 break;
@@ -58,10 +64,9 @@ const CMDProcessor = ({children}) => {
                 else {
                     const availableFiles = Object.keys(pwd.children).filter(el => pwd.children[el].type === 'file');
                     if (availableFiles.includes(cmdTarget))
-                        console.log('read target')
+                        dispatch(openReader(cmdTarget, pwd.children[cmdTarget].content))
                     else return 'File ' + cmdTarget + " doesn't exist";
                 }
-                // dispatch(openReader())
                 break
             case "catnt":
                 dispatch(closeReader())
@@ -92,7 +97,7 @@ const CMDProcessor = ({children}) => {
             cmd: command,
             time: timestamp(),
             response: response,
-            user: 'mishal-alshomary',
+            user: pwdPath.replace('root', 'mishal-alshomary'),
         }
 
         dispatch(addLog(cmdObject))

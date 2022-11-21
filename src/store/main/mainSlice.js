@@ -4,6 +4,7 @@ import structure from "../structure.json";
 
 const initialState = {
     logEntries: [],
+    logHistoryIndex: -1,
     reader: {
         name: 'Reader',
         content: 'content',
@@ -11,8 +12,8 @@ const initialState = {
     },
     cmd: '',
     newCmd: true,
-    pwd: structure.root.children.projects.children.project1,
-    pwdPath: 'root/projects/project1',
+    pwd: structure.root,
+    pwdPath: 'root',
     dirRoot: structure.root
 }
 
@@ -26,8 +27,17 @@ export const mainSlice = createSlice({
         fetchSuccess: state => {
             state.logEntries = [...state.logEntries]
         },
-        showReader: state => {
-            state.reader = {...state.reader, state: 'open'}
+        incrementHistoryIndex: state => {
+            state.logHistoryIndex++;
+        },
+        decrementHistoryIndex: state => {
+            state.logHistoryIndex--;
+        },
+        resetHistoryIndex: state => {
+            state.logHistoryIndex = 0;
+        },
+        showReader: (state, action) => {
+            state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
         },
         hideReader: state => {
             state.reader = {...state.reader, state: 'close'}
@@ -46,7 +56,18 @@ export const mainSlice = createSlice({
         }
     }
 })
-const {addSuccess, fetchSuccess, showReader, hideReader, updatePWD, updateCMD, resetPath} = mainSlice.actions
+const {
+    addSuccess,
+    fetchSuccess,
+    showReader,
+    hideReader,
+    updatePWD,
+    updateCMD,
+    resetPath,
+    incrementHistoryIndex,
+    decrementHistoryIndex,
+    resetHistoryIndex
+} = mainSlice.actions
 export default mainSlice.reducer;
 
 export const addLog = (logEntry) => async dispatch => {
@@ -66,8 +87,18 @@ export const getLogs = () => async dispatch => {
     }
 }
 
-export const openReader = () => dispatch => {
-    return dispatch(showReader())
+export const incrementLogHistoryIndex = () => dispatch => {
+    return dispatch(incrementHistoryIndex())
+}
+export const decrementLogHistoryIndex = () => dispatch => {
+    return dispatch(decrementHistoryIndex())
+}
+export const resetLogHistoryIndex = () => dispatch => {
+    return dispatch(resetHistoryIndex())
+}
+
+export const openReader = (name, content) => dispatch => {
+    return dispatch(showReader({name, content}))
 }
 
 export const closeReader = () => dispatch => {
@@ -85,7 +116,7 @@ export const changePathBack = () => (dispatch, getState) => {
     for (let i = 1; i < pathArr.length - 1; i++)
         newPWD = dirRoot.children[pathArr[i]];
     const newPwdPath = pathArr.slice(0, -1).join('/')
-    if(newPwdPath === 'root')
+    if (newPwdPath === 'root')
         newPWD = dirRoot;
     return dispatch(updatePWD({pwd: newPWD, path: newPwdPath}))
 }

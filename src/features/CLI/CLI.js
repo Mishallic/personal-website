@@ -1,28 +1,53 @@
 import './styles/cliMain.css'
 import {useEffect, useRef, useState} from "react";
 import Log from "./Log";
-import {useDispatch} from "react-redux";
-import {changeCMD} from "../../store/main/mainSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    changeCMD,
+    decrementLogHistoryIndex,
+    incrementLogHistoryIndex,
+    resetLogHistoryIndex
+} from "../../store/main/mainSlice";
 
-const CLI = ({log}) => {
+const CLI = ({log, logHistoryIndex}) => {
     const dispatch = useDispatch();
     const [activeText, setActiveText] = useState('');
     const textareaRef = useRef();
     const activeTextChangeHandler = ({target}) => setActiveText(target.value);
-
-
+    let pwdPath = useSelector(state => state.main.pwdPath);
+    pwdPath = pwdPath.replace('root', 'mishal-alshomary');
     const keyHandler = (e) => {
         const {key, target} = e;
         let {value} = target;
+        if (key === "ArrowUp") {
+            try {
+                e.preventDefault();
+                setActiveText(log[log.length - logHistoryIndex - 1].cmd);
+                dispatch(incrementLogHistoryIndex());
+                return;
+            } catch (e) {
+                // console.log(e)
+            }
+        }
+        if (key === "ArrowDown") {
+            try {
+                e.preventDefault();
+                setActiveText(log[log.length - logHistoryIndex + 1].cmd);
+                dispatch(decrementLogHistoryIndex());
+                return;
+            } catch (e) {
+                // console.log(e)
+            }
+        }
         if (key === 'Tab') e.preventDefault();
         if (key !== 'Enter') return;
         if (key === 'Enter' && value === '') value = '\n';
         dispatch(changeCMD(value));
+        dispatch(resetLogHistoryIndex());
         setActiveText('');
     }
 
     const globalClickHandler = (e) => {
-        console.log(e)
         textareaRef.current.focus();
     }
 
@@ -39,7 +64,7 @@ const CLI = ({log}) => {
             </div>
             <div className='cliInteractiveLine'>
                 <div className='interactiveLineMainText'>
-                    ai:~/ mishal-alshomary$
+                    ai:~/ {pwdPath}$
                 </div>
                 <div>
                     <input

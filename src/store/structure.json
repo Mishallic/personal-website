@@ -24,7 +24,8 @@
       },
       "links": {
         "type": "file",
-        "editable": false
+        "editable": false,
+        "content": "links content"
       }
     }
   }
