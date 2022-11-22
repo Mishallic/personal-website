@@ -32,7 +32,6 @@ const RootPage = () => {
     useEffect(()=>{
         dispatch(getProjects())
     },[])
-    console.log(projects)
     return (
         <div id="container">
             <div id="left_panel" style={{width: reader.state === 'open' ? '66vw' : '100vw'}}>

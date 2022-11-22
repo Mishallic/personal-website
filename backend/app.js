@@ -9,13 +9,13 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use('/blogs', blogsRouter);
 app.use('/projects', projectsRouter)
 
 
-app.listen(8000, async () => {
+app.listen(process.env.APP_PORT, async () => {
     console.log('app running on 8000')
 })
