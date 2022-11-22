@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {timestamp} from "../../helpers/timestamp";
 import {availableCmds} from "./availableCMDS";
@@ -8,20 +8,7 @@ import {addLog, changePath, changePathBack, closeReader, openReader, resetPWD} f
 const CMDProcessor = ({children}) => {
     const dispatch = useDispatch();
     const {cmd, newCmd, pwd, pwdPath} = useSelector(state => state.main);
-    const checkCmd = (cmd) => {
-        const cmdArr = cmd.split(' ')
-        const cmdKeyword = cmdArr[0];
-        return availableCmds.includes(cmdKeyword);
-    };
-    const createResponse = (cmd) => {
-        const cmdArr = cmd.split(' ');
-        const cmdKeyword = cmdArr[0];
-        let cmdTarget = null;
-        if (cmdArr.length > 0 && ["cd", "ls", "cat"].includes(cmdKeyword))
-            cmdTarget = cmdArr[1];
-        return cmdSwitch(cmdKeyword, cmdTarget)
-    }
-    const cmdSwitch = (cmdKeyword, cmdTarget) => {
+    const cmdSwitch = useCallback((cmdKeyword, cmdTarget) => {
         switch (cmdKeyword) {
             case "cd":
                 if (!cmdTarget) {
@@ -45,7 +32,6 @@ const CMDProcessor = ({children}) => {
                         return;
                     }
                 }
-                break;
             case "ls":
                 if (!cmdTarget) {
                     if (!('children' in pwd)) return '';
@@ -72,21 +58,39 @@ const CMDProcessor = ({children}) => {
                 dispatch(closeReader())
                 break;
             case "help":
+                break;
             // return help
             case "gui":
+                break;
             // switch to gui
             case "about":
+                break;
             // reader -> about
             case "projects":
-            // cd projects
+                break;
+            // cd projects.js
             case "blog":
+                break;
             // cd blog
             default:
                 return 'unrecognized';
         }
-    }
+    }, [dispatch, pwd, pwdPath])
+    const checkCmd = (cmd) => {
+        const cmdArr = cmd.split(' ')
+        const cmdKeyword = cmdArr[0];
+        return availableCmds.includes(cmdKeyword);
+    };
+    const createResponse = useCallback((cmd) => {
+        const cmdArr = cmd.split(' ');
+        const cmdKeyword = cmdArr[0];
+        let cmdTarget = null;
+        if (cmdArr.length > 0 && ["cd", "ls", "cat"].includes(cmdKeyword))
+            cmdTarget = cmdArr[1];
+        return cmdSwitch(cmdKeyword, cmdTarget)
+    }, [cmdSwitch])
 
-    const constructCmdObj = (command, good) => {
+    const constructCmdObj = useCallback((command, good) => {
         let response = '';
         if (!good)
             response = 'is not a recognized command. Type /h or ! for help';
@@ -101,12 +105,16 @@ const CMDProcessor = ({children}) => {
         }
 
         dispatch(addLog(cmdObject))
-    };
+    }, [createResponse, dispatch, pwdPath])
+
+    const handleNewCMD = useCallback((cmd) => {
+        constructCmdObj(cmd, checkCmd(cmd));
+    }, [constructCmdObj])
 
     useEffect(() => {
         if (!cmd) return;
-        constructCmdObj(cmd, checkCmd(cmd));
-    }, [newCmd]);
+        handleNewCMD(cmd);
+    }, [newCmd, cmd, handleNewCMD]);
 
     return children;
 }

@@ -25,8 +25,17 @@ export function fetchLog(amount = 1) {
 }
 
 export function addEntry(data) {
-    const response = {statusCode:201, message:'successful'};
+    const response = {statusCode: 201, message: 'successful'};
     return new Promise((resolve) =>
         setTimeout(() => resolve({data: response}), 100)
+    );
+}
+
+export function fetchProjects() {
+    return new Promise((resolve, reject) =>
+        fetch("/projects?n=2")
+            .then(response => response.text())
+            .then(result => resolve(result))
+            .catch(error => reject(error))
     );
 }

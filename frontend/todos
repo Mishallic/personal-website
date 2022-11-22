@@ -5,6 +5,11 @@ feature: cursor bar
 feature: auto complete on tab
 feature: log history [done]
 
+## modify structure to source from db
+## structure by entity not assets
+## add & read & render markdown from db
+
+
 prepare for content for blog
 psuedo complete projects
 

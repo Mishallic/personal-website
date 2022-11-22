@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-// import {addEntry} from "./apis";
-import structure from "../structure.json";
+import {structure} from "../structure.js";
+import {fetchProjects} from "./apis";
 
 const initialState = {
     logEntries: [],
@@ -14,7 +14,8 @@ const initialState = {
     newCmd: true,
     pwd: structure.root,
     pwdPath: 'root',
-    dirRoot: structure.root
+    dirRoot: structure.root,
+    projects: []
 }
 
 export const mainSlice = createSlice({
@@ -37,7 +38,9 @@ export const mainSlice = createSlice({
             state.logHistoryIndex = 0;
         },
         showReader: (state, action) => {
-            state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
+
+            // state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
+            state.reader = {name: action.payload.name, content: 'src/store/main/test.md', state: 'open'}
         },
         hideReader: state => {
             state.reader = {...state.reader, state: 'close'}
@@ -53,6 +56,9 @@ export const mainSlice = createSlice({
         resetPath: state => {
             state.pwdPath = 'root';
             state.pwd = structure.root
+        },
+        projectsSuccess: (state, action) => {
+            state.projects = action.payload
         }
     }
 })
@@ -66,7 +72,8 @@ const {
     resetPath,
     incrementHistoryIndex,
     decrementHistoryIndex,
-    resetHistoryIndex
+    resetHistoryIndex,
+    projectsSuccess
 } = mainSlice.actions
 export default mainSlice.reducer;
 
@@ -126,4 +133,12 @@ export const resetPWD = () => dispatch => {
 
 export const changeCMD = (cmd) => dispatch => {
     return dispatch(updateCMD(cmd));
+}
+
+export const getProjects = () => dispatch => {
+    fetchProjects().then(res=>{
+        return dispatch(projectsSuccess(res))
+    }).catch(e=>{
+        console.log(e)
+    });
 }
