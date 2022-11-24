@@ -2,7 +2,15 @@ import {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {timestamp} from "../../helpers/timestamp";
 import {availableCmds} from "./availableCMDS";
-import {addLog, changePath, changePathBack, closeReader, openReader, resetPWD} from "../../store/main/mainSlice";
+import {
+    addLog,
+    changePath,
+    changePathBack,
+    closeReader,
+    cmdTrigger,
+    openReader,
+    resetPWD
+} from "../../store/main/mainSlice";
 
 
 const CMDProcessor = ({children}) => {
@@ -103,8 +111,7 @@ const CMDProcessor = ({children}) => {
             response: response,
             user: pwdPath.replace('root', 'mishal-alshomary'),
         }
-
-        dispatch(addLog(cmdObject))
+        dispatch(addLog(cmdObject));
     }, [createResponse, dispatch, pwdPath])
 
     const handleNewCMD = useCallback((cmd) => {
@@ -112,8 +119,9 @@ const CMDProcessor = ({children}) => {
     }, [constructCmdObj])
 
     useEffect(() => {
-        if (!cmd) return;
+        if (!cmd || !newCmd) return;
         handleNewCMD(cmd);
+        dispatch(cmdTrigger());
     }, [newCmd, cmd, handleNewCMD]);
 
     return children;

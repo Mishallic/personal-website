@@ -23,11 +23,12 @@ router.get('/', (req, res) => {
         res.status(400).send('numbers only');
     else{
         const con = MysqlConnection.getInstance();
-        execSql(con, recordsNumber).then(() => {
-            res.send(200)
+        execSql(con, recordsNumber).then(result => {
+            res.send({data:result})
         })
     }
 })
+
 
 
 module.exports = router;

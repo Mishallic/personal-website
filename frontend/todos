@@ -5,9 +5,15 @@ feature: cursor bar
 feature: auto complete on tab
 feature: log history [done]
 
-## modify structure to source from db
-## structure by entity not assets
-## add & read & render markdown from db
+## modify structure to source from db [done]
+## structure by entity not assets [done]
+## add & read & render markdown from db [done]
+
+### file type dirty fix to be enhanced
+### project/blog column name identifier (about/content) CMDPROCESSOR L61
+### add clear command screen cmd / shortcut if possible
+### double check responsivity
+
 
 
 prepare for content for blog
@@ -36,9 +42,11 @@ links: my handles
 directories: {
     home:{
         type:directory,
+        child_type:'bi'
         children: {
             projects:{
                 type:directory,
+                child_type:'file',
                 children:{
                     project1:{},
                     project2:{},
@@ -47,6 +55,7 @@ directories: {
             },
             blog:{
                 type:directory,
+                child_type:'file',
                 children:{
                     blog1:{},
                     blog2:{},
@@ -63,4 +72,12 @@ directories: {
             }
         }
     }
+}
+
+
+
+structure dir ctx
+root: {
+    type:'directory',
+    children_type: 'b'
 }

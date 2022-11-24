@@ -2,11 +2,11 @@ import CLI from "../features/CLI/CLI";
 import Reader from "../features/Reader/Reader";
 import {useSelector, useDispatch} from "react-redux";
 import {useEffect} from "react";
-import {getProjects} from "../store/main/mainSlice";
+import {fetchMetadata, getMetadata, getProjects} from "../store/main/mainSlice";
 
 const RootPage = () => {
-    const {logEntries, logHistoryIndex, reader, projects} = useSelector(state => state.main);
-    const dispatch = useDispatch()
+    const {logEntries, logHistoryIndex, reader, pwd} = useSelector(state => state.main);
+    const dispatch = useDispatch();
     useEffect(() => {
         let isResizing = false;
         (function () {
@@ -30,8 +30,9 @@ const RootPage = () => {
         })();
     }, [reader.state]);
     useEffect(()=>{
-        dispatch(getProjects())
-    },[])
+        dispatch(getMetadata());
+    },[]);
+
     return (
         <div id="container">
             <div id="left_panel" style={{width: reader.state === 'open' ? '66vw' : '100vw'}}>

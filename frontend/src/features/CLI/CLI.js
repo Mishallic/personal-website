@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import Log from "./Log";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    changeCMD,
+    changeCMD, cmdTrigger,
     decrementLogHistoryIndex,
     incrementLogHistoryIndex,
     resetLogHistoryIndex

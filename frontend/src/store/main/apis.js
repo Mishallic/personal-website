@@ -35,7 +35,16 @@ export function fetchProjects() {
     return new Promise((resolve, reject) =>
         fetch("/projects?n=2")
             .then(response => response.text())
-            .then(result => resolve(result))
+            .then(result => resolve(JSON.parse(result)))
+            .catch(error => reject(error))
+    );
+}
+
+export function fetchBlogs() {
+    return new Promise((resolve, reject) =>
+        fetch("/blogs?n=2")
+            .then(response => response.text())
+            .then(result => resolve(JSON.parse(result)))
             .catch(error => reject(error))
     );
 }

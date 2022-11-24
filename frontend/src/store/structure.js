@@ -1,34 +1,17 @@
 export const structure = {
     "root": {
         "type": "dir",
+        "child_type": 0,
         "children": {
             "projects": {
                 "type": "dir",
-                "children": {
-                    "project1": {
-                        "type": "file"
-                    },
-                    "project2": {
-                        "type": "file"
-                    },
-                    "project3": {
-                        "type": "file"
-                    }
-                }
+                "child_type": 1,
+                "children": {}
             },
             "blog": {
                 "type": "dir",
-                "children": {
-                    "blog1": {
-                        "type": "file"
-                    },
-                    "blog2": {
-                        "type": "file"
-                    },
-                    "blog3": {
-                        "type": "file"
-                    }
-                }
+                "child_type": 1,
+                "children": {}
             },
             "about": {
                 "type": "file",

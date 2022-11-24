@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {structure} from "../structure.js";
-import {fetchProjects} from "./apis";
+import {fetchBlogs, fetchProjects} from "./apis";
 
 const initialState = {
     logEntries: [],
@@ -11,11 +11,12 @@ const initialState = {
         state: 'close'
     },
     cmd: '',
-    newCmd: true,
+    newCmd: false,
     pwd: structure.root,
     pwdPath: 'root',
     dirRoot: structure.root,
-    projects: []
+    projects: [],
+    blog: []
 }
 
 export const mainSlice = createSlice({
@@ -40,7 +41,7 @@ export const mainSlice = createSlice({
         showReader: (state, action) => {
 
             // state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
-            state.reader = {name: action.payload.name, content: 'src/store/main/test.md', state: 'open'}
+            state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
         },
         hideReader: state => {
             state.reader = {...state.reader, state: 'close'}
@@ -53,13 +54,23 @@ export const mainSlice = createSlice({
             state.newCmd = !state.newCmd;
             state.cmd = action.payload;
         },
+        triggerCMD: (state, action) => {
+            state.newCmd = false;
+        },
         resetPath: state => {
             state.pwdPath = 'root';
-            state.pwd = structure.root
+            state.pwd = state.dirRoot;
         },
         projectsSuccess: (state, action) => {
-            state.projects = action.payload
-        }
+            state.projects = action.payload;
+            state.pwd.children['projects'].children = action.payload
+            state.dirRoot.children['projects'].children = action.payload
+        },
+        blogsSuccess: (state, action) => {
+            state.blog = action.payload;
+            state.pwd.children['blog'].children = action.payload
+            state.dirRoot.children['blog'].children = action.payload
+        },
     }
 })
 const {
@@ -69,11 +80,13 @@ const {
     hideReader,
     updatePWD,
     updateCMD,
+    triggerCMD,
     resetPath,
     incrementHistoryIndex,
     decrementHistoryIndex,
     resetHistoryIndex,
-    projectsSuccess
+    projectsSuccess,
+    blogsSuccess
 } = mainSlice.actions
 export default mainSlice.reducer;
 
@@ -94,27 +107,13 @@ export const getLogs = () => async dispatch => {
     }
 }
 
-export const incrementLogHistoryIndex = () => dispatch => {
-    return dispatch(incrementHistoryIndex())
-}
-export const decrementLogHistoryIndex = () => dispatch => {
-    return dispatch(decrementHistoryIndex())
-}
-export const resetLogHistoryIndex = () => dispatch => {
-    return dispatch(resetHistoryIndex())
-}
+export const incrementLogHistoryIndex = () => dispatch => dispatch(incrementHistoryIndex());
+export const decrementLogHistoryIndex = () => dispatch => dispatch(decrementHistoryIndex());
+export const resetLogHistoryIndex = () => dispatch => dispatch(resetHistoryIndex());
+export const openReader = (name, content) => dispatch => dispatch(showReader({name, content}));
+export const closeReader = () => dispatch => dispatch(hideReader());
+export const changePath = (newPWD, newPwdPath) => dispatch => dispatch(updatePWD({pwd: newPWD, path: newPwdPath}));
 
-export const openReader = (name, content) => dispatch => {
-    return dispatch(showReader({name, content}))
-}
-
-export const closeReader = () => dispatch => {
-    return dispatch(hideReader())
-}
-
-export const changePath = (newPWD, newPwdPath) => dispatch => {
-    return dispatch(updatePWD({pwd: newPWD, path: newPwdPath}));
-}
 
 export const changePathBack = () => (dispatch, getState) => {
     const {main: {pwdPath, dirRoot}} = getState();
@@ -127,18 +126,35 @@ export const changePathBack = () => (dispatch, getState) => {
         newPWD = dirRoot;
     return dispatch(updatePWD({pwd: newPWD, path: newPwdPath}))
 }
-export const resetPWD = () => dispatch => {
-    return dispatch(resetPath())
+
+export const changeCMD = (cmd) => dispatch => dispatch(updateCMD(cmd));
+export const resetPWD = () => dispatch => dispatch(resetPath());
+export const cmdTrigger = () => dispatch => dispatch(triggerCMD());
+
+export const getMetadata = () => dispatch => {
+    dispatch(getProjects());
+    dispatch(getBlogs());
+}
+const getProjects = () => dispatch => {
+    fetchProjects()
+        .then(res => {
+            const projectsTransform = {};
+            for (const rec of res.data) projectsTransform[rec.name] = {...rec, type:'file'};
+            dispatch(projectsSuccess(projectsTransform));
+        })
+        .catch(e => {
+            console.log(e)
+        });
 }
 
-export const changeCMD = (cmd) => dispatch => {
-    return dispatch(updateCMD(cmd));
-}
-
-export const getProjects = () => dispatch => {
-    fetchProjects().then(res=>{
-        return dispatch(projectsSuccess(res))
-    }).catch(e=>{
-        console.log(e)
-    });
+const getBlogs = () => dispatch => {
+    fetchBlogs()
+        .then(res => {
+            const blogsTransform = {};
+            for (const rec of res.data) blogsTransform[rec.title] = {...rec, type:'file'};
+            dispatch(blogsSuccess(blogsTransform));
+        })
+        .catch(e => {
+            console.log(e)
+        });
 }
