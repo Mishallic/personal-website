@@ -7,7 +7,6 @@ function execSql(con, recordsNumber) {
         con.query(
             `SELECT * FROM user limit ${recordsNumber}`,
             function (err, results) {
-                console.log(results)
                 if (err) rej(err);
                 else res(results);
             }

@@ -80,6 +80,10 @@ const CMDProcessor = ({children}) => {
             case "blog":
                 break;
             // cd blog
+            case '!':
+                break;
+            case 'q!':
+                break;
             default:
                 return 'unrecognized';
         }
@@ -122,7 +126,7 @@ const CMDProcessor = ({children}) => {
         if (!cmd || !newCmd) return;
         handleNewCMD(cmd);
         dispatch(cmdTrigger());
-    }, [newCmd, cmd, handleNewCMD]);
+    }, [newCmd, cmd, handleNewCMD, dispatch]);
 
     return children;
 }

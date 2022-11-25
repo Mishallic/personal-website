@@ -17,5 +17,5 @@ app.use('/projects', projectsRouter)
 
 
 app.listen(process.env.APP_PORT, async () => {
-    console.log('app running on 8000')
+    console.log('app running on ' + process.env.APP_PORT)
 })

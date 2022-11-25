@@ -1,11 +1,11 @@
 import CLI from "../features/CLI/CLI";
 import Reader from "../features/Reader/Reader";
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {fetchMetadata, getMetadata, getProjects} from "../store/main/mainSlice";
+import {getMetadata} from "../store/main/mainSlice";
 
 const RootPage = () => {
-    const {logEntries, logHistoryIndex, reader, pwd} = useSelector(state => state.main);
+    const {logEntries, logHistoryIndex, reader} = useSelector(state => state.main);
     const dispatch = useDispatch();
     useEffect(() => {
         let isResizing = false;
@@ -31,7 +31,7 @@ const RootPage = () => {
     }, [reader.state]);
     useEffect(()=>{
         dispatch(getMetadata());
-    },[]);
+    },[dispatch]);
 
     return (
         <div id="container">
