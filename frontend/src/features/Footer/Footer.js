@@ -6,7 +6,6 @@ const Footer = () => {
             <ul>
                 <li><a href='https://brave.com'>About</a></li>
                 <li><a href='https://brave.com'>GUI Version</a></li>
-                <li><a href='https://brave.com'>Project</a></li>
             </ul>
         </div>
     )

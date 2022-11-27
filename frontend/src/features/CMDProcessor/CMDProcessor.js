@@ -84,6 +84,8 @@ const CMDProcessor = ({children}) => {
                 break;
             case 'q!':
                 break;
+            case 'clr':
+                break;
             default:
                 return 'unrecognized';
         }
