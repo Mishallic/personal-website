@@ -2,8 +2,10 @@ issue: log rerender on input
 issue: cant hold highlight
 enhancement: fix styling
 feature: cursor bar
-feature: auto complete on tab
+feature: auto complete on tab [done]
 feature: log history [done]
+
+enhancement: tab checks command to file type
 
 ## modify structure to source from db [done]
 ## structure by entity not assets [done]

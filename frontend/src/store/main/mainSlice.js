@@ -5,6 +5,7 @@ import {fetchBlogs, fetchProjects} from "./apis";
 const initialState = {
     logEntries: [],
     logHistoryIndex: -1,
+    suggestionIndex: 0,
     reader: {
         name: 'Reader',
         content: 'content',
@@ -48,7 +49,7 @@ export const mainSlice = createSlice({
         },
         updatePWD: (state, action) => {
             state.pwd = action.payload.pwd;
-            state.pwdPath = action.payload.path
+            state.pwdPath = action.payload.path;
         },
         updateCMD: (state, action) => {
             state.newCmd = !state.newCmd;
@@ -71,6 +72,12 @@ export const mainSlice = createSlice({
             state.pwd.children['blog'].children = action.payload
             state.dirRoot.children['blog'].children = action.payload
         },
+        resetSuggestionIndex: state => {
+            state.suggestionIndex = 0;
+        },
+        incrementSuggestionIndex: (state, action) => {
+            state.suggestionIndex = action.payload;
+        }
     }
 })
 const {
@@ -86,7 +93,9 @@ const {
     decrementHistoryIndex,
     resetHistoryIndex,
     projectsSuccess,
-    blogsSuccess
+    blogsSuccess,
+    resetSuggestionIndex,
+    incrementSuggestionIndex
 } = mainSlice.actions
 export default mainSlice.reducer;
 
@@ -139,7 +148,7 @@ const getProjects = () => dispatch => {
     fetchProjects()
         .then(res => {
             const projectsTransform = {};
-            for (const rec of res.data) projectsTransform[rec.name] = {...rec, type:'file'};
+            for (const rec of res.data) projectsTransform[rec.name] = {...rec, type: 'file'};
             dispatch(projectsSuccess(projectsTransform));
         })
         .catch(e => {
@@ -151,10 +160,13 @@ const getBlogs = () => dispatch => {
     fetchBlogs()
         .then(res => {
             const blogsTransform = {};
-            for (const rec of res.data) blogsTransform[rec.title] = {...rec, type:'file'};
+            for (const rec of res.data) blogsTransform[rec.title] = {...rec, type: 'file'};
             dispatch(blogsSuccess(blogsTransform));
         })
         .catch(e => {
             console.log(e)
         });
 }
+
+export const suggestionIndexReset = () => dispatch => dispatch(resetSuggestionIndex())
+export const suggestionIndexIncrement = (i) => dispatch => dispatch(incrementSuggestionIndex(i))

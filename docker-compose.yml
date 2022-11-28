@@ -9,6 +9,7 @@ services:
     ports:
       - "8000:8000"
     container_name: node-api
+    restart: always
     depends_on:
       - mysql
   mysql:
