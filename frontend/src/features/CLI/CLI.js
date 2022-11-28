@@ -47,12 +47,14 @@ const CLI = ({log, logHistoryIndex}) => {
             let availableChildren = Object.keys(pwd.children);
             if (suggestionIndex === 0 && !availableChildren.includes(cmdTarget)) {
                 let targetChildIndex = availableChildren.findIndex(el => el.includes(cmdTarget));
-                if (targetChildIndex === -1) targetChildIndex = 0;
+                if (targetChildIndex === -1 && !cmdTarget) targetChildIndex = 0;
+                if (targetChildIndex === -1 && cmdTarget) return;
 
                 let newIndex = targetChildIndex + 1;
                 if (targetChildIndex + 1 === availableChildren.length)
                     newIndex = 0
                 dispatch(suggestionIndexIncrement(newIndex))
+
                 setActiveText(mainCMD + ' ' + availableChildren[targetChildIndex]);
                 return;
             }
@@ -111,6 +113,7 @@ const CLI = ({log, logHistoryIndex}) => {
                         value={activeText}
                         autoFocus
                         ref={textareaRef}
+                        spellCheck={false}
                     />
                 </div>
             </div>
