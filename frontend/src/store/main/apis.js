@@ -25,10 +25,20 @@ export function fetchLog(amount = 1) {
 }
 
 export function addEntry(data) {
-    const response = {statusCode: 201, message: 'successful'};
-    return new Promise((resolve) =>
-        setTimeout(() => resolve({data: response}), 100)
-    );
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+        redirect: 'follow'
+    };
+    return new Promise((resolve, reject) =>
+        fetch("/log", requestOptions)
+            .then(response => response.text())
+            .then(result => resolve(result))
+            .catch(error => reject(error))
+    )
 }
 
 export function fetchProjects() {

@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {structure} from "../structure.js";
-import {fetchBlogs, fetchProjects} from "./apis";
+import {addEntry, fetchBlogs, fetchProjects} from "./apis";
 
 const initialState = {
     logEntries: [],
@@ -101,11 +101,19 @@ export default mainSlice.reducer;
 
 export const addLog = (logEntry) => async dispatch => {
     try {
-        // const {data} = await addEntry(logEntry);
         dispatch(addSuccess(logEntry));
+        dispatch(createLogEntry(logEntry))
     } catch (e) {
         return console.error(e);
     }
+}
+
+export const createLogEntry = (data) => async dispatch => {
+    const logObject = {cmd:data.cmd, info:JSON.stringify({...data})}
+    addEntry(logObject)
+        .then(result => {console.log('😀')})
+        .catch(e=>{
+            console.log('🙃')})
 }
 export const getLogs = () => async dispatch => {
     try {
