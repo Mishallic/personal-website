@@ -43,7 +43,7 @@ export function addEntry(data) {
 
 export function fetchProjects() {
     return new Promise((resolve, reject) =>
-        fetch("/projects?n=2")
+        fetch("/projects?n=5")
             .then(response => response.text())
             .then(result => resolve(JSON.parse(result)))
             .catch(error => reject(error))
@@ -52,7 +52,7 @@ export function fetchProjects() {
 
 export function fetchBlogs() {
     return new Promise((resolve, reject) =>
-        fetch("/blogs?n=2")
+        fetch("/blogs?n=5")
             .then(response => response.text())
             .then(result => resolve(JSON.parse(result)))
             .catch(error => reject(error))

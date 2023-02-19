@@ -40,8 +40,6 @@ export const mainSlice = createSlice({
             state.logHistoryIndex = 0;
         },
         showReader: (state, action) => {
-
-            // state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
             state.reader = {name: action.payload.name, content: action.payload.content, state: 'open'}
         },
         hideReader: state => {

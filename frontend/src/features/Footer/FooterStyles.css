@@ -5,17 +5,17 @@
     height: 4vh;
     max-width:100%;
 }
-ul {
+.footerItems {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
-li {
+.footerItem {
     float: left;
 }
 
-li a {
+.footerItem a {
     display: block;
     color: #999;
     text-align: center;

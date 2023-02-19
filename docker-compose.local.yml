@@ -24,9 +24,10 @@ services:
       - ./backend/init:/docker-entrypoint-initdb.d
   frontend:
     build:
-      context: ./frontend
+      context: frontend
+      dockerfile: local.Dockerfile
     ports:
-      - "80:80"
+      - "3000:3000"
     stdin_open: true
     container_name: react-ui
     volumes:

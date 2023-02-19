@@ -3,9 +3,9 @@ import './FooterStyles.css'
 const Footer = () => {
     return (
         <div className='root'>
-            <ul>
-                <li><a href='https://brave.com'>About</a></li>
-                <li><a href='https://brave.com'>GUI Version</a></li>
+            <ul className='footerItems'>
+                <li className='footerItem'><a href=''>About</a></li>
+                <li className='footerItem'><a href=''>GUI Version</a></li>
             </ul>
         </div>
     )

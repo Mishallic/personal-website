@@ -30,7 +30,7 @@ const CMDProcessor = ({children}) => {
                     } else return;
                 } else {
                     if (!('children' in pwd) || !Object.keys(pwd.children) || !Object.keys(pwd.children).includes(cmdTarget))
-                        return 'Directory ' + cmdTarget + " doesn't exist";
+                        return 'Directory ' + cmdTarget + " does not exist";
                     else if (pwd.children[cmdTarget].type !== 'dir')
                         return cmdTarget + ' is not a directory'
                     else {
@@ -48,7 +48,7 @@ const CMDProcessor = ({children}) => {
                 if (('children' in pwd) && Object.keys(pwd.children) && !Object.keys(pwd.children).includes(cmdTarget))
                     return 'Directory is not available!';
                 if (('children' in pwd) && (cmdTarget in pwd.children) && pwd.children[cmdTarget].type !== 'dir')
-                    return "Can't perform action on file"
+                    return "Cannot perform action on file"
                 if (('children' in pwd) && Object.keys(pwd.children).includes(cmdTarget))
                     return Object.keys(pwd.children[cmdTarget].children);
                 break;
@@ -57,9 +57,11 @@ const CMDProcessor = ({children}) => {
                     return ''
                 else {
                     const availableFiles = Object.keys(pwd.children).filter(el => pwd.children[el].type === 'file');
-                    if (availableFiles.includes(cmdTarget))
+                    if (availableFiles.includes(cmdTarget)) {
+                        console.log(pwd.children[cmdTarget])
                         dispatch(openReader(cmdTarget, pwd.children[cmdTarget].content))
-                    else return 'File ' + cmdTarget + " doesn't exist";
+                    }
+                    else return 'File ' + cmdTarget + " does not exist";
                 }
                 break
             case "catnt":
