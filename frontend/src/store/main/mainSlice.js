@@ -62,12 +62,16 @@ export const mainSlice = createSlice({
         },
         projectsSuccess: (state, action) => {
             state.projects = action.payload;
-            state.pwd.children['projects'].children = action.payload
-            state.dirRoot.children['projects'].children = action.payload
+            if (state.pwdPath === "root/projects")
+                state.pwd.children = action.payload;
+            else state.pwd.children['projects'].children = action.payload;
+            state.dirRoot.children['projects'].children = action.payload;
         },
         blogsSuccess: (state, action) => {
             state.blog = action.payload;
-            state.pwd.children['blog'].children = action.payload
+            if (state.pwdPath === "root/blog")
+                state.pwd.children = action.payload;
+            else state.pwd.children['blog'].children = action.payload
             state.dirRoot.children['blog'].children = action.payload
         },
         resetSuggestionIndex: state => {
@@ -128,11 +132,11 @@ export const resetLogHistoryIndex = () => dispatch => dispatch(resetHistoryIndex
 export const openReader = (name, content) => dispatch => dispatch(showReader({name, content}));
 export const closeReader = () => dispatch => dispatch(hideReader());
 export const changePath = (newPWD, newPwdPath) => dispatch => {
+    dispatch(updatePWD({ pwd: newPWD, path: newPwdPath }));
     if (newPwdPath === 'root/projects')
         dispatch(getProjects())
     if (newPwdPath === 'root/blog')
         dispatch(getBlogs())
-    dispatch(updatePWD({pwd: newPWD, path: newPwdPath}));
 }
 
 
@@ -172,7 +176,7 @@ const getBlogs = () => dispatch => {
     fetchBlogs()
         .then(res => {
             const blogsTransform = {};
-            for (const rec of res.data) blogsTransform[rec.title] = {...rec, type: 'file'};
+            for (const rec of res.data) blogsTransform[rec.name] = {...rec, type: 'file'};
             dispatch(blogsSuccess(blogsTransform));
         })
         .catch(e => {
