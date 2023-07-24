@@ -127,7 +127,13 @@ export const decrementLogHistoryIndex = () => dispatch => dispatch(decrementHist
 export const resetLogHistoryIndex = () => dispatch => dispatch(resetHistoryIndex());
 export const openReader = (name, content) => dispatch => dispatch(showReader({name, content}));
 export const closeReader = () => dispatch => dispatch(hideReader());
-export const changePath = (newPWD, newPwdPath) => dispatch => dispatch(updatePWD({pwd: newPWD, path: newPwdPath}));
+export const changePath = (newPWD, newPwdPath) => dispatch => {
+    if (newPwdPath === 'root/projects')
+        dispatch(getProjects())
+    if (newPwdPath === 'root/blog')
+        dispatch(getBlogs())
+    dispatch(updatePWD({pwd: newPWD, path: newPwdPath}));
+}
 
 
 export const changePathBack = () => (dispatch, getState) => {
