@@ -172,3 +172,16 @@
 .cliMotd a:hover {
     text-decoration-style: solid;
 }
+
+/* Narrow screens: a command that does not fit beside the prompt wraps under it instead of breaking mid-word. */
+@media (max-width: 768px) {
+    .cliLog .cliInteractiveLine {
+        flex-wrap: wrap;
+    }
+
+    .logLineTextarea {
+        flex: 1 1 160px;
+        word-break: normal;
+        overflow-wrap: anywhere;
+    }
+}

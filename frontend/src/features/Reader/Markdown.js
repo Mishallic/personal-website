@@ -1,3 +1,4 @@
+import './prose.css';
 import ReactMarkdown from "react-markdown";
 import gfm from 'remark-gfm'
 
@@ -8,7 +9,9 @@ const components = {
 
 // Markdown rendering shared by the terminal's reader and the desktop's text editor.
 const Markdown = ({children}) => (
-    <ReactMarkdown remarkPlugins={[gfm]} components={components} children={children}/>
+    <div className='prose'>
+        <ReactMarkdown remarkPlugins={[gfm]} components={components} children={children}/>
+    </div>
 );
 
 export default Markdown;
