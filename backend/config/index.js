@@ -6,7 +6,8 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const backendDir = path.join(__dirname, '..');
 
 // Most specific file first. dotenv never overrides a variable that is already set, so real
-// environment variables win over .env.<NODE_ENV>, which wins over .env.
+// environment variables (for example those set on the hosting platform) win over
+// .env.<NODE_ENV>, which wins over .env.
 for (const file of [`.env.${NODE_ENV}`, '.env']) {
     const fullPath = path.join(backendDir, file);
     if (fs.existsSync(fullPath)) dotenv.config({path: fullPath});
@@ -26,12 +27,7 @@ const positiveInt = (name, fallback) => {
     return value;
 };
 
-const missing = ['DB_HOST', 'DB_USER', 'DB_DATABASE'].filter(name => optional(name) === '');
-if (missing.length)
-    throw new Error(
-        `Missing required environment variables: ${missing.join(', ')}. ` +
-        `Copy backend/.example.env to backend/.env (or .env.${NODE_ENV}) and fill it in.`
-    );
+const REQUIRED = ['DB_HOST', 'DB_USER', 'DB_DATABASE'];
 
 const config = {
     env: NODE_ENV,
@@ -48,6 +44,16 @@ const config = {
     // Upper bound for ?n= on the list endpoints.
     maxRecords: positiveInt('MAX_RECORDS', 100),
     logFormat: NODE_ENV === 'production' ? 'combined' : 'dev',
+
+    /** Throws a descriptive error when the database configuration is incomplete. */
+    assertComplete() {
+        const missing = REQUIRED.filter(name => optional(name) === '');
+        if (missing.length)
+            throw new Error(
+                `Missing required environment variables: ${missing.join(', ')}. ` +
+                `Set them on the host, or copy backend/.example.env to backend/.env (or .env.${NODE_ENV}).`
+            );
+    },
 };
 
 module.exports = config;

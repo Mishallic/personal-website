@@ -1,4 +1,4 @@
-const config = require('./config'); // loads .env files and validates them before anything else
+const config = require('./config'); // loads .env files before anything else
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -27,6 +27,12 @@ app.use((err, req, res, next) => {
     res.status(500).send(config.isProduction ? 'Internal Server Error' : `Internal Server Error: ${err.message}`);
 });
 
-app.listen(config.port, () => {
-    console.log(`app running on ${config.port} (${config.env})`)
-})
+module.exports = app;
+
+// `npm start` runs this file directly. Serverless hosts import the app instead (see api/index.js).
+if (require.main === module) {
+    config.assertComplete();
+    app.listen(config.port, () => {
+        console.log(`app running on ${config.port} (${config.env})`)
+    })
+}

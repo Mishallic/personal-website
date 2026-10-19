@@ -1,0 +1,12 @@
+node_modules
+.idea
+.git
+frontend/build
+frontend/nginx
+docker-compose.yml
+docker-compose.local.yml
+env_file
+env_file_example
+backend/.env
+backend/.env.*
+backend/init

@@ -26,3 +26,5 @@ yarn-error.log*
 backend/.env
 env_file
 backend/init/01.sql
+# vercel cli project link
+.vercel
