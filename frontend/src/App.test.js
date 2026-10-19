@@ -32,6 +32,9 @@ const type = (text) => act(async () => {
     fireEvent.keyDown(input(), {key: 'Enter'});
 });
 const press = (key) => fireEvent.keyDown(input(), {key});
+const click = (element) => act(async () => {
+    fireEvent.click(element);
+});
 
 beforeEach(() => {
     global.fetch = jest.fn((url) => {
@@ -119,6 +122,32 @@ test('ls tells folders from files by style, without labels', async () => {
     expect(screen.getByText('about')).toHaveClass('lsName', 'file');
     expect(screen.getByText('links')).toHaveClass('lsName', 'file');
     expect(screen.queryByText('folder')).not.toBeInTheDocument();
+});
+
+test('GUI Version opens the desktop, which browses the same tree, and Terminal returns', async () => {
+    const store = await renderApp();
+    await click(screen.getByText('GUI Version'));
+    expect(screen.queryByRole('textbox', {name: 'command'})).not.toBeInTheDocument();
+    expect(screen.getByRole('dialog', {name: 'Home'})).toBeInTheDocument();
+    expect(window.location.hash).toBe('#gui');
+
+    await click(screen.getByRole('button', {name: 'Projects'}));
+    expect(store.getState().main.pwdPath).toBe('root/projects');
+    expect(screen.getByRole('dialog', {name: 'projects'})).toBeInTheDocument();
+    await click(screen.getByRole('button', {name: 'portfolio'}));
+    expect(screen.getByRole('dialog', {name: 'portfolio - Text Editor'})).toHaveTextContent('terminal styled site');
+    await click(screen.getByRole('button', {name: 'close portfolio - Text Editor'}));
+    expect(screen.queryByTestId('markdown')).not.toBeInTheDocument();
+
+    await click(screen.getByRole('button', {name: 'About'}));
+    expect(screen.getByTestId('markdown')).toHaveTextContent('Mishal AlShomary');
+    await click(screen.getByRole('button', {name: 'Terminal'}));
+    expect(screen.getByRole('textbox', {name: 'command'})).toBeInTheDocument();
+    expect(window.location.hash).toBe('');
+
+    await type('gui');
+    expect(screen.getByRole('dialog', {name: 'projects'})).toBeInTheDocument();
+    await click(screen.getByRole('button', {name: 'Terminal'}));
 });
 
 test('the footer About and the readme file describe this site', async () => {

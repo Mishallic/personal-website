@@ -10,6 +10,7 @@ export const availableCmds = [
 
     "help",
     "!",
+    "gui",
 
     "about",
     "projects",
