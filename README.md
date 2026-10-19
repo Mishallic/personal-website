@@ -13,7 +13,9 @@ desktop that browses the same content: a Files window for the directories and a 
 
 - `about`, `links` and `readme` (about this site, also behind the footer's About) are markdown strings in
   `frontend/src/content/about.js`, `links.js` and `readme.js`.
-- Colours are CSS variables in `frontend/src/index.css`; the icons are rendered from `frontend/public/favicon.svg`.
+- Colours are CSS variables in `frontend/src/index.css`; the icons are rendered from `frontend/public/icon.svg`.
+- The desktop wallpaper is one of the two images in `frontend/public/wallpaper/`, picked at random on each page load
+  (`frontend/src/features/GUI/Wallpaper.js`).
 - `projects` lists the repositories pinned on the GitHub profile. They are bundled with the frontend in
   `frontend/src/content/projects.json` so the site works without a database; rows from the `project`
   table are merged over them at runtime (same name: the database wins). Refresh the bundled list with:

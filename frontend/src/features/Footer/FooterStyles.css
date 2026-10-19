@@ -1,5 +1,5 @@
 .footerRoot {
-    color: #999;
+    color: var(--muted);
     background: #3d3d3d;
     flex: 0 0 auto;
     min-height: 4vh;
@@ -9,18 +9,38 @@
 .footerItems {
     list-style-type: none;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+    padding: 0 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
 }
 
 .footerItem {
-    float: left;
+    display: flex;
+    align-items: baseline;
 }
 
+/* Quiet links: a dotted underline says "clickable", hover brightens, nothing more. */
 .footerItem a {
     display: block;
-    color: #999;
-    text-align: center;
-    padding: 12px;
-    text-decoration: none;
+    color: var(--muted);
+    padding: 12px 8px;
+    text-decoration: underline dotted;
+    text-decoration-color: rgba(153, 153, 153, 0.55);
+    text-underline-offset: 4px;
+    transition: color 0.15s;
+}
+
+.footerItem a:hover,
+.footerItem a:focus-visible {
+    color: #ddd;
+    text-decoration-color: #ddd;
+    outline: none;
+}
+
+.footerHint {
+    font-size: 11px;
+    font-style: italic;
+    color: #7a7a7a;
+    margin-left: 2px;
 }
