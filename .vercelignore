@@ -10,3 +10,5 @@ env_file_example
 backend/.env
 backend/.env.*
 backend/init
+.env.local
+.env*.local
