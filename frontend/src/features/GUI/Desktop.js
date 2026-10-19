@@ -30,7 +30,7 @@ const Desktop = () => {
     const dispatch = useDispatch();
     const dirRoot = useSelector(state => state.main.dirRoot);
     const reader = useSelector(state => state.main.reader);
-    const [filesOpen, setFilesOpen] = useState(true);
+    const [filesOpen, setFilesOpen] = useState(false); // the desktop starts empty; Files opens on request
     const [front, setFront] = useState('files');
 
     useEffect(() => {
