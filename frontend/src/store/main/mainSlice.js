@@ -6,7 +6,11 @@ import {resolvePath, toEntries} from "./entries";
 /** How many submitted commands the history queue keeps. */
 export const HISTORY_LIMIT = 50;
 
+/** The page starts in desktop mode when opened with #gui (the footer's GUI Version link). */
+const initialMode = () => (typeof window !== 'undefined' && window.location.hash === '#gui') ? 'gui' : 'cli';
+
 const initialState = {
+    mode: initialMode(), // 'cli' (terminal) or 'gui' (desktop)
     logEntries: [],
     cmdHistory: [],      // bounded FIFO queue of submitted commands, oldest first
     logHistoryIndex: 0,  // steps back from the newest command; 0 = the line being typed
@@ -96,6 +100,9 @@ export const mainSlice = createSlice({
         },
         clearLog: (state) => {
             state.logEntries = []; // the command history queue is kept on purpose
+        },
+        setMode: (state, action) => {
+            state.mode = action.payload;
         }
     }
 })
@@ -116,7 +123,8 @@ const {
     blogsSuccess,
     resetSuggestionIndex,
     incrementSuggestionIndex,
-    clearLog
+    clearLog,
+    setMode
 } = mainSlice.actions
 export default mainSlice.reducer;
 
@@ -152,6 +160,14 @@ export const resetLogHistoryIndex = () => dispatch => dispatch(resetHistoryIndex
 export const openReader = (name, content) => dispatch => dispatch(showReader({name, content}));
 export const closeReader = () => dispatch => dispatch(hideReader());
 export const clearCommandLog = () => dispatch => dispatch(clearLog());
+// Switch between the terminal and the desktop; the url hash mirrors it so #gui can be shared.
+export const switchMode = (mode) => dispatch => {
+    dispatch(setMode(mode));
+    if (typeof window === 'undefined') return;
+    const hash = mode === 'gui' ? '#gui' : '';
+    if (window.location.hash !== hash)
+        window.history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+};
 export const changePath = (newPwdPath) => dispatch => {
     dispatch(updatePWD({path: newPwdPath}));
     if (newPwdPath === 'root/projects')

@@ -11,7 +11,8 @@ import {
     cmdTrigger,
     openReader,
     resetPWD,
-    clearCommandLog
+    clearCommandLog,
+    switchMode
 } from "../../store/main/mainSlice";
 
 const HELP_ITEMS = [
@@ -24,6 +25,7 @@ const HELP_ITEMS = [
     {usage: 'projects', description: 'my projects (cd projects)'},
     {usage: 'blog', description: 'my blog (cd blog)'},
     {usage: 'links', description: 'where to find me (cat links)'},
+    {usage: 'gui', description: 'switch to the desktop version'},
     {usage: 'help', description: 'this list (also: !)'},
 ];
 const HELP_NOTE = 'Tab completes names, ↑ and ↓ browse the command history.';
@@ -92,6 +94,9 @@ const CMDProcessor = ({children}) => {
             case "projects": // shortcut for `cd projects`, from anywhere
             case "blog":     // shortcut for `cd blog`, from anywhere
                 dispatch(changePath('root/' + cmdKeyword));
+                return;
+            case "gui":
+                dispatch(switchMode('gui'));
                 return;
             default:
                 return 'unrecognized';

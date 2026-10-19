@@ -1,6 +1,8 @@
 # personal-website
 
-A portfolio with a terminal interface. Type `help` in the prompt to see the commands.
+A portfolio with a terminal interface. Type `help` in the prompt to see the commands. The footer's
+"GUI Version" (or the `gui` command, or opening the site with `#gui`) switches to a small Ubuntu-like
+desktop that browses the same content: a Files window for the directories and a Text Editor for the files.
 
 - `frontend/` React (Create React App) + Redux Toolkit. The CLI, the command processor and the markdown reader.
 - `backend/` Express + MySQL. Serves `/projects`, `/blogs` and `/log`.
