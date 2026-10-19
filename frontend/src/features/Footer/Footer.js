@@ -18,7 +18,10 @@ const Footer = () => {
         <div className='footerRoot'>
             <ul className='footerItems'>
                 <li className='footerItem'><a href='#readme' onClick={showAbout}>About</a></li>
-                <li className='footerItem'><a href='#gui' onClick={showGui}>GUI Version</a></li>
+                <li className='footerItem'>
+                    <a href='#gui' onClick={showGui}>GUI Version</a>
+                    <span className='footerHint'>Not a programmer?</span>
+                </li>
             </ul>
         </div>
     )

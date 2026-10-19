@@ -1,5 +1,9 @@
-// Desktop wallpaper: a poster of Rubick, the Grand Magus, with his spells written as code.
-// Hero render from Valve's Dota 2 CDN, re-encoded to frontend/public/wallpaper/rubick.webp; artwork © Valve.
+// Desktop wallpaper: a Rubick poster with his spells written as faint code. Artwork © Valve.
+export const WALLPAPERS = ['rubick-trailer.jpg', 'rubick-stargazer.jpg'];
+
+// Picked once per page load, so every visit gets one of the two at random.
+export const picked = WALLPAPERS[Math.floor(Math.random() * WALLPAPERS.length)];
+
 const CODE = [
     '// the grand magus of the codebase',
     'function spellSteal(spell) {',
@@ -19,11 +23,10 @@ const CODE = [
 ].join('\n');
 
 const Wallpaper = () => (
-    <div className='wallpaper' aria-hidden='true'>
-        <div className='wallpaperGlow'/>
+    <div className='wallpaper' aria-hidden='true' data-wallpaper={picked}
+         style={{backgroundImage: `url(${process.env.PUBLIC_URL}/wallpaper/${picked})`}}>
+        <div className='wallpaperShade'/>
         <pre className='wallpaperCode'>{CODE}</pre>
-        <pre className='wallpaperCode second'>{CODE}</pre>
-        <img className='wallpaperHero' src={`${process.env.PUBLIC_URL}/wallpaper/rubick.webp`} alt=''/>
         <div className='wallpaperTitle'>
             RUBICK
             <span>grand magus · spell steal · git clone</span>

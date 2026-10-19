@@ -75,20 +75,23 @@
     z-index: 1;
 }
 
-/* Wallpaper: Rubick poster with his spells as faint code. */
+/* Wallpaper: a Rubick image (one of two, picked per visit) with his spells as faint code. */
 .wallpaper {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    background: linear-gradient(160deg, #04100b 0%, #0a2b20 40%, #0f3f2d 62%, #04100b 100%);
+    background-color: #04100b;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
-.wallpaperGlow {
+/* Darkens the bottom and left edges so the title and code read over any image. */
+.wallpaperShade {
     position: absolute;
-    right: -12%;
-    bottom: -25%;
-    width: 75%;
-    height: 130%;
-    background: radial-gradient(ellipse at center, rgba(70, 230, 150, 0.38) 0%, rgba(70, 230, 150, 0.1) 35%, transparent 65%);
+    inset: 0;
+    background:
+        linear-gradient(to top, rgba(2, 10, 7, 0.88) 0%, rgba(2, 10, 7, 0.4) 32%, rgba(2, 10, 7, 0) 58%),
+        linear-gradient(to right, rgba(2, 10, 7, 0.55) 0%, rgba(2, 10, 7, 0) 50%);
 }
 .wallpaperCode {
     position: absolute;
@@ -96,19 +99,8 @@
     top: 7%;
     margin: 0;
     font: 13px/1.75 'Azeret Mono', monospace;
-    color: rgba(140, 255, 190, 0.14);
+    color: rgba(140, 255, 190, 0.16);
     white-space: pre;
-}
-.wallpaperCode.second { left: 38%; top: 44%; color: rgba(140, 255, 190, 0.08); }
-.wallpaperHero {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 96%;
-    max-width: 52%;
-    object-fit: contain;
-    object-position: right bottom;
-    filter: drop-shadow(0 0 40px rgba(80, 255, 170, 0.35)) drop-shadow(0 24px 24px rgba(0, 0, 0, 0.6));
 }
 .wallpaperTitle {
     position: absolute;
@@ -286,8 +278,7 @@
     .dockItem { width: 42px; height: 42px; }
     .desktopArea { left: 56px; }
     .desktopIcons { display: none; }
-    .wallpaperCode, .wallpaperCode.second { display: none; }
-    .wallpaperHero { max-width: 95%; height: 62%; right: -8%; bottom: 14%; }
+    .wallpaperCode { display: none; }
     .wallpaperTitle { left: 70px; right: 12px; bottom: 28px; font-size: 34px; letter-spacing: 0.1em; }
     .wallpaperTitle span { font-size: 9px; letter-spacing: 0.14em; margin-top: 8px; }
     .wallpaperCredit { bottom: 4px; right: 6px; font-size: 9px; }
