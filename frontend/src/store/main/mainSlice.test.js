@@ -4,6 +4,7 @@ import {CHILD_TYPE} from '../structure';
 
 const {pushHistory, clearLog, addSuccess, updatePWD, projectsSuccess} = mainSlice.actions;
 const run = (actions) => actions.reduce(reducer, undefined);
+const bundledProjects = () => Object.keys(reducer(undefined, {type: 'init'}).dirRoot.children.projects.children);
 
 describe('command history queue', () => {
     test('keeps at most HISTORY_LIMIT commands, dropping the oldest first', () => {
@@ -48,8 +49,31 @@ describe('directory tree from db records', () => {
         const entries = toEntries(projects, {child_type: CHILD_TYPE.FILE});
         const state = run([updatePWD({path: 'root/projects'}), projectsSuccess(entries)]);
         expect(state.pwdPath).toBe('root/projects');
-        expect(Object.keys(state.pwd.children)).toEqual(['site', 'bot']);
+        expect(state.pwd.children).toMatchObject({site: {type: 'file'}, bot: {type: 'file'}});
         expect(resolvePath(state.dirRoot, 'root/projects')).toEqual(state.pwd);
         expect(resolvePath(state.dirRoot, 'root/nope')).toBe(state.dirRoot);
+    });
+});
+
+describe('bundled pinned projects', () => {
+    test('are readable files in the projects directory from the start', () => {
+        const state = reducer(undefined, {type: 'init'});
+        const names = bundledProjects();
+        expect(names.length).toBeGreaterThan(0);
+        for (const name of names) {
+            const entry = state.dirRoot.children.projects.children[name];
+            expect(entry.type).toBe('file');
+            expect(entry.content).toContain(`# ${name}`);
+            expect(entry.content).toContain(entry.url);
+        }
+    });
+
+    test('db records merge over them and override the same name', () => {
+        const names = bundledProjects();
+        const entries = toEntries([{name: names[0], about: 'from db'}, {name: 'extra', about: 'x'}], {child_type: CHILD_TYPE.FILE});
+        const state = run([projectsSuccess(entries)]);
+        const children = state.dirRoot.children.projects.children;
+        expect(Object.keys(children)).toEqual([...names, 'extra']);
+        expect(children[names[0]].content).toBe('from db');
     });
 });

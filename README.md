@@ -5,6 +5,19 @@ A portfolio with a terminal interface. Type `help` in the prompt to see the comm
 - `frontend/` React (Create React App) + Redux Toolkit. The CLI, the command processor and the markdown reader.
 - `backend/` Express + MySQL. Serves `/projects`, `/blogs` and `/log`.
 - `api/` + `vercel.json` Vercel deployment: static frontend plus the backend as a serverless function.
+- `scripts/` Content tooling.
+
+## Content
+
+`projects` lists the repositories pinned on the GitHub profile. They are bundled with the frontend in
+`frontend/src/content/projects.json` so the site works without a database; rows from the `project`
+table are merged over them at runtime (same name: the database wins). Refresh the bundled list with:
+
+```sh
+GITHUB_TOKEN=<token> node scripts/pinned-projects.js Mishallic
+```
+
+The token is optional but avoids GitHub's 60 requests/hour limit for anonymous calls.
 
 ## Run locally
 
@@ -16,7 +29,7 @@ cp backend/.example.env backend/.env         # API settings, DB_HOST=mysql insid
 docker compose -f docker-compose.local.yml up --build
 ```
 
-**Frontend only** (no database: projects and blog stay empty):
+**Frontend only** (no database: the blog stays empty, projects come from the bundled list):
 
 ```sh
 cd frontend && npm install && npm start

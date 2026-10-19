@@ -25,10 +25,11 @@ const initialState = {
     blog: []
 }
 
-// Write db-backed entries into the tree, then re-resolve pwd from its path so the working
-// directory reflects the new tree no matter which directory the user is in when data arrives.
+// Merge db-backed entries over the ones bundled with the app (same name: the db row wins), then
+// re-resolve pwd from its path so the working directory reflects the new tree no matter which
+// directory the user is in when data arrives.
 const setDirChildren = (state, dirName, entries) => {
-    state.dirRoot.children[dirName].children = entries;
+    Object.assign(state.dirRoot.children[dirName].children, entries);
     state.pwd = resolvePath(state.dirRoot, state.pwdPath);
 };
 
