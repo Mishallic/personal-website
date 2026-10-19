@@ -25,10 +25,11 @@ const HELP_ITEMS = [
     {usage: 'projects', description: 'my projects (cd projects)'},
     {usage: 'blog', description: 'my blog (cd blog)'},
     {usage: 'links', description: 'where to find me (cat links)'},
+    {usage: 'readme', description: 'about this site (cat readme)'},
     {usage: 'gui', description: 'switch to the desktop version'},
     {usage: 'help', description: 'this list (also: !)'},
 ];
-const HELP_NOTE = 'Tab completes names, ↑ and ↓ browse the command history.';
+const HELP_NOTE = '💡 Tab completes names, ↑ and ↓ browse the command history.';
 const TARGET_CMDS = ["cd", "ls", "cat"];
 const splitCmd = (cmd) => cmd.trim().split(/\s+/);
 
@@ -87,8 +88,9 @@ const CMDProcessor = ({children}) => {
             case "clr":
                 dispatch(clearCommandLog());
                 return '';
-            case "about":    // shortcut for `cat about`, from anywhere
-            case "links":    // shortcut for `cat links`, from anywhere
+            case "about":    // shortcuts for `cat about`, `cat links`, `cat readme`, from anywhere
+            case "links":
+            case "readme":
                 dispatch(openReader(cmdKeyword, fileContent(dirRoot.children[cmdKeyword])));
                 return;
             case "projects": // shortcut for `cd projects`, from anywhere

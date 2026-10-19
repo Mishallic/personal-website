@@ -264,8 +264,12 @@
 .emptyFolder { grid-column: 1 / -1; color: #888; text-align: center; margin-top: 40px; }
 
 .editorBody { padding: 22px 32px 40px; }
+/* Maximised: the text sits centred in a wider, roomier column instead of hugging the left edge. */
+.window.maximised .editorBody { padding: 40px 56px 80px; }
+.window.maximised .editorBody .prose { max-width: 76ch; font-size: 16.5px; }
 /* Light variant of the shared reading typography. */
 .editorBody .prose {
+    margin: 0 auto;
     --prose-fg: #2e2e2e;
     --prose-heading: #141414;
     --prose-muted: #6b6b6b;

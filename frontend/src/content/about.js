@@ -1,9 +1,9 @@
 // Content of the `about` file. Markdown, rendered by the reader.
 const about = `# Mishal AlShomary
 
-Senior front-end & full-stack engineer · Amman, Jordan
+Senior front-end & full-stack engineer · 📍 Amman, Jordan
 
-I build web applications end to end, with React, Next.js and Node.js at the core and production
+👋 I build web applications end to end, with React, Next.js and Node.js at the core and production
 React Native alongside. Since 2019 I have shipped work in logistics, banking, education and
 research, and led front-end delivery as a team lead: architecture, development standards and
 mentoring. A graphic-design degree shapes how I approach UI, and a growing data toolkit
@@ -12,14 +12,14 @@ mentoring. A graphic-design degree shapes how I approach UI, and a growing data 
 This site is a terminal because I love terminals, and because Google's foobar screening process
 left a mark. Type \`help\` to see what it can do.
 
-## Skills
+## 🛠️ Skills
 
 - **Front-end:** React, Next.js, JavaScript, HTML, CSS, React Native (production)
 - **Back-end:** Node.js, REST APIs, PHP, Python
 - **Data:** MySQL, MongoDB, data analysis with Python and SQL
 - **Infrastructure and tools:** Docker, Linux, Apache, Git
 
-## Experience
+## 💼 Experience
 
 - **Senior Full-Stack Engineer, Nafith Logistics** (contract, 9 months): designed, built and
   deployed a full-stack logistics portal with operational reporting and data retrieval, and
@@ -37,7 +37,7 @@ left a mark. Type \`help\` to see what it can do.
   cycle; its data cleaning improved data quality and reporting and became the basis for
   measuring product usage.
 
-## Selected projects
+## 🚀 Selected projects
 
 - **hos-trip-planner** (Django, React): plans a truck trip under the FMCSA hours-of-service
   rules, placing every required rest, break and fuel stop on a route map and filling in the
@@ -47,7 +47,7 @@ left a mark. Type \`help\` to see what it can do.
 
 \`cd projects\` to browse these and more.
 
-## Certifications and education
+## 🎓 Certifications and education
 
 - IBM Python for Data Science and Artificial Intelligence, Coursera
 - MongoDB Developer

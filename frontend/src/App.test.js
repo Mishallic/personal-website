@@ -197,6 +197,9 @@ test('about, links, projects, blog and quit work as shortcuts from anywhere', as
     expect(screen.getByTestId('markdown')).toHaveTextContent('linkedin.com/in/mishal-alshomary');
     await type('quit');
     expect(screen.queryByTestId('markdown')).not.toBeInTheDocument();
+    await type('readme');
+    expect(screen.getByTestId('markdown')).toHaveTextContent('About this site');
+    await type('quit');
     await type('blog');
     expect(store.getState().main.pwdPath).toBe('root/blog');
     await type('projects');

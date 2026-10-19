@@ -15,5 +15,6 @@ export const availableCmds = [
     "about",
     "projects",
     "blog",
-    "links"
+    "links",
+    "readme"
 ];

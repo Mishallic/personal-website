@@ -39,7 +39,7 @@ const FilesWindow = ({front, onFocus, onClose, onOpenFile}) => {
                     ))}
                 </aside>
                 <section className='filesGrid'>
-                    {entries.length === 0 && <p className='emptyFolder'>Folder is empty</p>}
+                    {entries.length === 0 && <p className='emptyFolder'>Folder is empty 🍃</p>}
                     {entries.map(([name, entry]) => (
                         <button key={name} className={`fileItem ${entry.type}`} onClick={() => open(name, entry)}>
                             <Icon name={entry.type === 'dir' ? 'folder' : 'file'} size={44}/>
