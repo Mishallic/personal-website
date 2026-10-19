@@ -18,6 +18,12 @@ const HELP = "Available commands: cd, ls, cat, close, clear, about, projects, bl
 const TARGET_CMDS = ["cd", "ls", "cat"];
 const splitCmd = (cmd) => cmd.trim().split(/\s+/);
 
+// Directory listing with each entry's type, rendered line by line by the log; nothing for an empty dir.
+const listEntries = (children) => {
+    const items = Object.entries(children || {}).map(([name, entry]) => ({name, type: entry.type}));
+    return items.length ? {kind: 'entries', items} : '';
+};
+
 const CMDProcessor = ({children}) => {
     const dispatch = useDispatch();
     const cmd = useSelector(state => state.main.cmd);
@@ -44,10 +50,10 @@ const CMDProcessor = ({children}) => {
                 dispatch(changePath(pwdPath + '/' + cmdTarget));
                 return;
             case "ls":
-                if (!cmdTarget) return Object.keys(entries);
+                if (!cmdTarget) return listEntries(entries);
                 if (!(cmdTarget in entries)) return 'Directory is not available!';
                 if (entries[cmdTarget].type !== 'dir') return "Cannot perform action on file";
-                return Object.keys(entries[cmdTarget].children || {});
+                return listEntries(entries[cmdTarget].children);
             case "cat":
                 if (!cmdTarget) return '';
                 if (!(cmdTarget in entries) || entries[cmdTarget].type !== 'file')

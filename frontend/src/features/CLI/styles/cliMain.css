@@ -108,3 +108,30 @@
     font-size: 12px;
     word-break: break-word;
 }
+
+/* Directory listing: one entry per line with its type. */
+.lsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-left: 4px;
+}
+
+.lsItem {
+    display: flex;
+    gap: 12px;
+}
+
+.lsType {
+    color: #999;
+    flex: 0 0 6ch;
+}
+
+.lsName.dir {
+    color: #62b0ff;
+    font-weight: 500;
+}
+
+.lsName.file {
+    color: white;
+}

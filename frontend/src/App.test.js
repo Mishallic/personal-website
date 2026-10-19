@@ -109,3 +109,12 @@ test('pinned github projects are readable without a backend', async () => {
     await type(`cat ${first.name}`);
     expect(screen.getByTestId('markdown')).toHaveTextContent(first.url);
 });
+
+test('ls labels every item as a folder or a file', async () => {
+    await renderApp();
+    await type('ls');
+    expect(screen.getByText('projects').previousSibling).toHaveTextContent('folder');
+    expect(screen.getByText('blog').previousSibling).toHaveTextContent('folder');
+    expect(screen.getByText('about').previousSibling).toHaveTextContent('file');
+    expect(screen.getByText('links').previousSibling).toHaveTextContent('file');
+});
