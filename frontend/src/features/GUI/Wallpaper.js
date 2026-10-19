@@ -27,9 +27,9 @@ const Wallpaper = () => (
          style={{backgroundImage: `url(${process.env.PUBLIC_URL}/wallpaper/${picked})`}}>
         <div className='wallpaperShade'/>
         <pre className='wallpaperCode'>{CODE}</pre>
-        <div className='wallpaperTitle'>
-            RUBICK
-            <span>grand magus · spell steal · git clone</span>
+        <div className='wallpaperTagline'>
+            <span>front-end &amp; full-stack engineer · react · next.js · node.js · amman, jordan</span>
+            <span>graphic designer by degree · terminals · dota 2 · chess · horses · music</span>
         </div>
         <div className='wallpaperCredit'>Rubick, Dota 2. Artwork © Valve</div>
     </div>

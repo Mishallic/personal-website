@@ -102,25 +102,20 @@
     color: rgba(140, 255, 190, 0.16);
     white-space: pre;
 }
-.wallpaperTitle {
+/* Two quiet lines about the person: work on the first, life on the second. */
+.wallpaperTagline {
     position: absolute;
     left: 7%;
+    right: 7%;
     bottom: 9%;
-    font-weight: 700;
-    font-size: clamp(44px, 7.5vw, 104px);
-    letter-spacing: 0.14em;
-    line-height: 1;
-    color: #e8d9a0;
-    text-shadow: 0 0 30px rgba(80, 255, 170, 0.35), 0 4px 18px rgba(0, 0, 0, 0.6);
-}
-.wallpaperTitle span {
-    display: block;
-    margin-top: 12px;
-    font: 500 clamp(11px, 1.1vw, 15px)/1.4 'Azeret Mono', monospace;
-    letter-spacing: 0.32em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font: 500 clamp(11px, 1.1vw, 15px)/1.5 'Azeret Mono', monospace;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: rgba(140, 255, 190, 0.8);
-    text-shadow: none;
+    color: rgba(140, 255, 190, 0.85);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 .wallpaperCredit {
     position: absolute;
@@ -279,8 +274,7 @@
     .desktopArea { left: 56px; }
     .desktopIcons { display: none; }
     .wallpaperCode { display: none; }
-    .wallpaperTitle { left: 70px; right: 12px; bottom: 28px; font-size: 34px; letter-spacing: 0.1em; }
-    .wallpaperTitle span { font-size: 9px; letter-spacing: 0.14em; margin-top: 8px; }
+    .wallpaperTagline { left: 70px; right: 12px; bottom: 28px; gap: 8px; font-size: 9px; letter-spacing: 0.12em; }
     .wallpaperCredit { bottom: 4px; right: 6px; font-size: 9px; }
     .filesWindow, .editorWindow { left: 2%; top: 3%; width: 96%; height: 92%; }
     .filesSidebar { width: 110px; }
