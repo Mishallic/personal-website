@@ -5,6 +5,7 @@ import {changePath, closeReader, getMetadata, openReader, switchMode} from "../.
 import {fileContent} from "../../store/main/entries";
 import FilesWindow from "./FilesWindow";
 import EditorWindow from "./EditorWindow";
+import Wallpaper from "./Wallpaper";
 import {Icon} from "./icons";
 
 const TopBar = ({app}) => {
@@ -59,6 +60,7 @@ const Desktop = () => {
 
     return (
         <div className='desktop'>
+            <Wallpaper/>
             <TopBar app={app}/>
             <nav className='dock' aria-label='dock'>
                 {dock.map(item => (
@@ -68,10 +70,16 @@ const Desktop = () => {
                 ))}
             </nav>
             <main className='desktopArea'>
-                <button className='desktopIcon' onClick={() => openFolder('root')}>
-                    <Icon name='home' size={40}/>
-                    <span>Home</span>
-                </button>
+                <div className='desktopIcons' data-testid='desktop-icons'>
+                    <button className='desktopIcon' onClick={() => openFolder('root')}>
+                        <Icon name='home' size={40}/>
+                        <span>Home</span>
+                    </button>
+                    <button className='desktopIcon' onClick={() => openFile('about', dirRoot.children.about)}>
+                        <Icon name='user' size={40}/>
+                        <span>About</span>
+                    </button>
+                </div>
                 {filesOpen && (
                     <FilesWindow front={front === 'files'} onFocus={() => setFront('files')}
                                  onClose={() => setFilesOpen(false)} onOpenFile={openFile}/>
