@@ -1,5 +1,5 @@
 .cliRoot {
-    background: #111;
+    background: var(--bg);
     overflow-y: auto;
     height: 100%;
     width: 100%;
@@ -14,7 +14,7 @@
 }
 
 .interactiveLineMainText {
-    color: #f48020;
+    color: var(--accent);
     margin-right: 10px;
     font-weight: 600;
     white-space: nowrap;
@@ -65,11 +65,11 @@
     width: 0.6em;
     height: 1.15em;
     box-sizing: border-box;
-    border: 1px solid #f48020;
+    border: 1px solid var(--accent);
 }
 
 .cursorBlink {
-    background: #f48020;
+    background: var(--accent);
     animation: cliCursorBlink 1s steps(1) infinite;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .logLineMainText {
-    color: #f48020;
+    color: var(--accent);
     margin-right: 10px;
     font-weight: 600;
     white-space: nowrap;
@@ -118,7 +118,7 @@
 }
 
 .lsName.dir {
-    color: #729fcf;
+    color: var(--dir);
     font-weight: 700;
 }
 
@@ -141,11 +141,11 @@
 
 .helpUsage {
     flex: 0 0 11ch;
-    color: #f48020;
+    color: var(--accent);
     white-space: nowrap;
 }
 
 .helpNote {
     margin-top: 6px;
-    color: #999;
+    color: var(--muted);
 }

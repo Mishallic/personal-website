@@ -9,7 +9,9 @@ A portfolio with a terminal interface. Type `help` in the prompt to see the comm
 
 ## Content
 
-- `about` and `links` are markdown strings in `frontend/src/content/about.js` and `links.js`.
+- `about`, `links` and `readme` (about this site, also behind the footer's About) are markdown strings in
+  `frontend/src/content/about.js`, `links.js` and `readme.js`.
+- Colours are CSS variables in `frontend/src/index.css`; the icons are rendered from `frontend/public/favicon.svg`.
 - `projects` lists the repositories pinned on the GitHub profile. They are bundled with the frontend in
   `frontend/src/content/projects.json` so the site works without a database; rows from the `project`
   table are merged over them at runtime (same name: the database wins). Refresh the bundled list with:

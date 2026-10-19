@@ -1,6 +1,7 @@
 import pinnedProjects from "../content/projects.json";
 import about from "../content/about";
 import links from "../content/links";
+import readme from "../content/readme";
 
 // What kind of entries a directory may contain.
 export const CHILD_TYPE = {
@@ -40,6 +41,11 @@ export const structure = {
                 "type": "file",
                 "editable": false,
                 "content": links
+            },
+            "readme": {
+                "type": "file",
+                "editable": false,
+                "content": readme
             }
         }
     }
