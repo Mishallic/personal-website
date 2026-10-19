@@ -6,8 +6,16 @@ import {
     changeCMD,
     decrementLogHistoryIndex,
     incrementLogHistoryIndex,
-    resetLogHistoryIndex, suggestionIndexIncrement, suggestionIndexReset
+    resetLogHistoryIndex, suggestionIndexIncrement, suggestionIndexReset, switchMode
 } from "../../store/main/mainSlice";
+
+// Login message, like a terminal's message of the day: what to type, and the way out for non-programmers.
+const Motd = ({onDesktop}) => (
+    <div className='cliMotd'>
+        <div>Welcome to mishal-alshomary's terminal. Type <code>help</code> to see what you can do here.</div>
+        <div>Not a programmer? <a href='#gui' onClick={onDesktop}>Switch to the desktop version</a> instead.</div>
+    </div>
+);
 
 const CLI = ({log}) => {
     const dispatch = useDispatch();
@@ -21,7 +29,13 @@ const CLI = ({log}) => {
     const suggestionIndex = useSelector(state => state.main.suggestionIndex);
     const cmdHistory = useSelector(state => state.main.cmdHistory);
     const logHistoryIndex = useSelector(state => state.main.logHistoryIndex);
+    const motd = useSelector(state => state.main.motd);
     const pwdPathUser = pwdPath.replace('root', 'mishal-alshomary');
+    const toDesktop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dispatch(switchMode('gui'));
+    };
 
     // The custom cursor bar follows the real caret of the (otherwise caret-less) input.
     const syncCaret = () => setCaretPos(textareaRef.current?.selectionStart ?? 0);
@@ -123,6 +137,7 @@ const CLI = ({log}) => {
 
     return (
         <div className='cliRoot' onClick={globalClickHandler}>
+            {motd && <Motd onDesktop={toDesktop}/>}
             <div className='cliLog'>
                 <Log entries={log}/>
             </div>

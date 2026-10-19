@@ -5,7 +5,7 @@ import readme from "../../content/readme";
 
 const Footer = () => {
     const dispatch = useDispatch();
-    // About opens the page about this site (also `cat readme`); GUI Version switches to the desktop.
+    // About opens the page about this site (also `cat readme`); the desktop link switches mode.
     const showAbout = (e) => {
         e.preventDefault();
         dispatch(openReader('readme', readme));
@@ -19,8 +19,8 @@ const Footer = () => {
             <ul className='footerItems'>
                 <li className='footerItem'><a href='#readme' onClick={showAbout}>About</a></li>
                 <li className='footerItem'>
-                    <a href='#gui' onClick={showGui}>GUI Version</a>
                     <span className='footerHint'>Not a programmer?</span>
+                    <a className='footerAction' href='#gui' onClick={showGui}>Desktop version</a>
                 </li>
             </ul>
         </div>

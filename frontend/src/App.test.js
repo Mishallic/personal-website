@@ -126,10 +126,12 @@ test('ls tells folders from files by style, without labels', async () => {
 
 test('GUI Version opens the desktop, which browses the same tree, and Terminal returns', async () => {
     const store = await renderApp();
-    await click(screen.getByText('GUI Version'));
+    await click(screen.getByRole('link', {name: 'Desktop version'}));
     expect(screen.queryByRole('textbox', {name: 'command'})).not.toBeInTheDocument();
-    expect(screen.getByRole('dialog', {name: 'Home'})).toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument(); // the desktop starts with no window open
     expect(window.location.hash).toBe('#gui');
+    await click(screen.getByRole('button', {name: 'Files'}));
+    expect(screen.getByRole('dialog', {name: 'Home'})).toBeInTheDocument();
 
     await click(screen.getByRole('button', {name: 'Projects'}));
     expect(store.getState().main.pwdPath).toBe('root/projects');
@@ -151,7 +153,27 @@ test('GUI Version opens the desktop, which browses the same tree, and Terminal r
     expect(window.location.hash).toBe('');
 
     await type('gui');
+    expect(screen.queryByRole('dialog', {name: 'Home'})).not.toBeInTheDocument(); // no Files window on arrival
+    await click(screen.getByRole('button', {name: 'Projects'}));
     expect(screen.getByRole('dialog', {name: 'projects'})).toBeInTheDocument();
+    await click(screen.getByRole('button', {name: 'Terminal'}));
+});
+
+test('the login message explains the terminal, offers the desktop, and goes away on clear', async () => {
+    await renderApp();
+    expect(screen.getByText(/Welcome to/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Not a programmer\?/)).toHaveLength(2); // login message and footer
+    await type('clear');
+    expect(screen.queryByText(/Welcome to/)).not.toBeInTheDocument();
+    await click(screen.getByRole('link', {name: 'Desktop version'}));
+    await click(screen.getByRole('button', {name: 'Terminal'}));
+    expect(screen.queryByText(/Welcome to/)).not.toBeInTheDocument(); // stays cleared for the session
+});
+
+test('the login message link switches to the desktop', async () => {
+    await renderApp();
+    await click(screen.getByRole('link', {name: 'Switch to the desktop version'}));
+    expect(screen.queryByRole('textbox', {name: 'command'})).not.toBeInTheDocument();
     await click(screen.getByRole('button', {name: 'Terminal'}));
 });
 

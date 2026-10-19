@@ -11,6 +11,7 @@ const initialMode = () => (typeof window !== 'undefined' && window.location.hash
 
 const initialState = {
     mode: initialMode(), // 'cli' (terminal) or 'gui' (desktop)
+    motd: true,          // the welcome message above the log, shown until the screen is cleared
     logEntries: [],
     cmdHistory: [],      // bounded FIFO queue of submitted commands, oldest first
     logHistoryIndex: 0,  // steps back from the newest command; 0 = the line being typed
@@ -100,6 +101,7 @@ export const mainSlice = createSlice({
         },
         clearLog: (state) => {
             state.logEntries = []; // the command history queue is kept on purpose
+            state.motd = false;
         },
         setMode: (state, action) => {
             state.mode = action.payload;

@@ -149,3 +149,26 @@
     margin-top: 6px;
     color: var(--muted);
 }
+
+/* Login message above the log. */
+.cliMotd {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 2px 0 10px;
+}
+
+.cliMotd code {
+    font-family: inherit;
+    color: #ddd;
+}
+
+.cliMotd a {
+    color: var(--accent);
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+}
+
+.cliMotd a:hover {
+    text-decoration-style: solid;
+}
