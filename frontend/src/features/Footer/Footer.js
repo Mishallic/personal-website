@@ -20,7 +20,7 @@ const Footer = () => {
                 <li className='footerItem'><a href='#readme' onClick={showAbout}>About</a></li>
                 <li className='footerItem'>
                     <span className='footerHint'>Not a programmer?</span>
-                    <a className='footerAction' href='#gui' onClick={showGui}>Desktop version</a>
+                    <a className='footerAction' href='#gui' onClick={showGui}><span aria-hidden='true'>🖥️ </span>Desktop version</a>
                 </li>
             </ul>
         </div>

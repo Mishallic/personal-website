@@ -29,7 +29,7 @@ const Wallpaper = () => (
         <pre className='wallpaperCode'>{CODE}</pre>
         <div className='wallpaperTagline'>
             <span>front-end &amp; full-stack engineer · react · next.js · node.js · amman, jordan</span>
-            <span>graphic designer by degree · terminals · dota 2 · chess · horses · music</span>
+            <span>graphic designer by degree · terminals 💻 · dota 2 🎮 · chess ♟️ · horses 🐎 · music 🎵</span>
         </div>
         <div className='wallpaperCredit'>Rubick, Dota 2. Artwork © Valve</div>
     </div>

@@ -69,8 +69,8 @@ function cleanReadme(text, {owner, name, branch, url}) {
 function compose(meta, body) {
     const lines = [`# ${meta.name}`, ''];
     if (meta.description) lines.push(meta.description, '');
-    lines.push(`- **Repository:** ${meta.url}`);
-    if (meta.homepage) lines.push(`- **Website:** ${meta.homepage}`);
+    lines.push(`- 🔗 **Repository:** ${meta.url}`);
+    if (meta.homepage) lines.push(`- 🌐 **Website:** ${meta.homepage}`);
     if (meta.language) lines.push(`- **Language:** ${meta.language}`);
     if (meta.topics.length) lines.push(`- **Topics:** ${meta.topics.join(', ')}`);
     lines.push(`- **Last update:** ${meta.pushed_at.slice(0, 10)}`, '');

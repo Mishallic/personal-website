@@ -12,8 +12,8 @@ import {
 // Login message, like a terminal's message of the day: what to type, and the way out for non-programmers.
 const Motd = ({onDesktop}) => (
     <div className='cliMotd'>
-        <div>Welcome to mishal-alshomary's terminal. Type <code>help</code> to see what you can do here.</div>
-        <div>Not a programmer? <a href='#gui' onClick={onDesktop}>Switch to the desktop version</a> instead.</div>
+        <div><span aria-hidden='true'>👋 </span>Welcome to mishal-alshomary's terminal. Type <code>help</code> to see what you can do here.</div>
+        <div>Not a programmer? <span aria-hidden='true'>🖥️ </span><a href='#gui' onClick={onDesktop}>Switch to the desktop version</a> instead.</div>
     </div>
 );
 

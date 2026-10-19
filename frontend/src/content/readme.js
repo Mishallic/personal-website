@@ -5,19 +5,19 @@ A portfolio with a terminal interface, built to give a perspective on who I am, 
 interests. Two reasons it is a terminal: I love terminals, and Google's foobar screening process
 was an inspiration.
 
-## How to use
+## ⌨️ How to use
 
 It works like a Linux shell: \`ls\`, \`cd\`, \`cat\`, Tab completion and ↑ / ↓ history. Type \`help\` or
 \`!\` for the full list. \`about\`, \`projects\`, \`blog\` and \`links\` jump straight to the right place.
 
-## Technologies
+## 🧰 Technologies
 
 - **Front-end:** React, Redux Toolkit, plain CSS, markdown rendering with react-markdown
 - **Back-end:** Node.js, Express, MySQL
 - **Infrastructure:** Docker and Docker Compose for local development; Vercel for hosting, with the
   front-end as a static site and the API as a serverless function
 
-## Architecture
+## 🏗️ Architecture
 
 - **CLI:** the interactive interface, made of the input line and the log of past commands. It
   captures every keystroke and hands submitted lines to the command processor.
