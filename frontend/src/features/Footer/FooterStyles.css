@@ -60,3 +60,9 @@
     border-color: #c8c8c8;
     color: #eee;
 }
+
+/* Narrow screens: the welcome line already asks the question, so only the pill stays, on one line. */
+@media (max-width: 480px) {
+    .footerHint { display: none; }
+    .footerItem a.footerAction { white-space: nowrap; }
+}
