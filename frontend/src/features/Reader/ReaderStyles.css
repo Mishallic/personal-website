@@ -1,19 +1,22 @@
 .readerRoot {
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background: #222;
     padding: 15px;
     box-sizing: border-box;
     flex-direction: column;
-    overflow: scroll;
+    overflow: auto;
     color: whitesmoke;
+    word-break: break-word;
 }
 
-.content {
-    width: 100%;
-    overflow: hidden;
-}
-.header{
+.readerHeader {
     font-size: 10px;
+}
+
+.readerRoot img,
+.readerRoot pre {
+    max-width: 100%;
+    overflow: auto;
 }

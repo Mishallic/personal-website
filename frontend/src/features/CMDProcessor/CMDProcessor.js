@@ -2,6 +2,7 @@ import {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {timestamp} from "../../helpers/timestamp";
 import {availableCmds} from "./availableCMDS";
+import {fileContent} from "../../store/main/entries";
 import {
     addLog,
     changePath,
@@ -9,14 +10,23 @@ import {
     closeReader,
     cmdTrigger,
     openReader,
-    resetPWD
+    resetPWD,
+    clearCommandLog
 } from "../../store/main/mainSlice";
 
+const HELP = "Available commands: cd, ls, cat, close, clear, about, projects, blog, links, help, quit";
+const TARGET_CMDS = ["cd", "ls", "cat"];
+const splitCmd = (cmd) => cmd.trim().split(/\s+/);
 
 const CMDProcessor = ({children}) => {
     const dispatch = useDispatch();
-    const {cmd, newCmd, pwd, pwdPath} = useSelector(state => state.main);
+    const cmd = useSelector(state => state.main.cmd);
+    const newCmd = useSelector(state => state.main.newCmd);
+    const pwd = useSelector(state => state.main.pwd);
+    const pwdPath = useSelector(state => state.main.pwdPath);
+
     const cmdSwitch = useCallback((cmdKeyword, cmdTarget) => {
+        const entries = pwd.children || {};
         switch (cmdKeyword) {
             case "cd":
                 if (!cmdTarget) {
@@ -24,92 +34,61 @@ const CMDProcessor = ({children}) => {
                     return;
                 }
                 if (cmdTarget === '..') {
-                    if (pwdPath !== 'root') {
-                        dispatch(changePathBack());
-                        return
-                    } else return;
-                } else {
-                    if (!('children' in pwd) || !Object.keys(pwd.children) || !Object.keys(pwd.children).includes(cmdTarget))
-                        return 'Directory ' + cmdTarget + " does not exist";
-                    else if (pwd.children[cmdTarget].type !== 'dir')
-                        return cmdTarget + ' is not a directory'
-                    else {
-                        const newPwd = pwd.children[cmdTarget];
-                        const newPwdPath = pwdPath + '/' + cmdTarget;
-                        dispatch(changePath(newPwd, newPwdPath));
-                        return;
-                    }
+                    if (pwdPath !== 'root') dispatch(changePathBack());
+                    return;
                 }
+                if (!(cmdTarget in entries))
+                    return 'Directory ' + cmdTarget + " does not exist";
+                if (entries[cmdTarget].type !== 'dir')
+                    return cmdTarget + ' is not a directory';
+                dispatch(changePath(pwdPath + '/' + cmdTarget));
+                return;
             case "ls":
-                if (!cmdTarget) {
-                    if (!('children' in pwd)) return '';
-                    return Object.keys(pwd.children)
-                }
-                if (('children' in pwd) && Object.keys(pwd.children) && !Object.keys(pwd.children).includes(cmdTarget))
-                    return 'Directory is not available!';
-                if (('children' in pwd) && (cmdTarget in pwd.children) && pwd.children[cmdTarget].type !== 'dir')
-                    return "Cannot perform action on file"
-                if (('children' in pwd) && Object.keys(pwd.children).includes(cmdTarget))
-                    return Object.keys(pwd.children[cmdTarget].children);
-                break;
+                if (!cmdTarget) return Object.keys(entries);
+                if (!(cmdTarget in entries)) return 'Directory is not available!';
+                if (entries[cmdTarget].type !== 'dir') return "Cannot perform action on file";
+                return Object.keys(entries[cmdTarget].children || {});
             case "cat":
-                if (!cmdTarget)
-                    return ''
-                else {
-                    const availableFiles = Object.keys(pwd.children).filter(el => pwd.children[el].type === 'file');
-                    if (availableFiles.includes(cmdTarget)) {
-                        console.log(pwd.children[cmdTarget])
-                        dispatch(openReader(cmdTarget, pwd.children[cmdTarget].content))
-                    }
-                    else return 'File ' + cmdTarget + " does not exist";
-                }
-                break
-            case "catnt":
-                dispatch(closeReader())
-                break;
+                if (!cmdTarget) return '';
+                if (!(cmdTarget in entries) || entries[cmdTarget].type !== 'file')
+                    return 'File ' + cmdTarget + " does not exist";
+                // db rows carry the body in different columns (projects: about, blogs: content)
+                dispatch(openReader(cmdTarget, fileContent(entries[cmdTarget])));
+                return;
+            case "close":
+                dispatch(closeReader());
+                return;
             case "help":
-                break;
-            // return help
-            case "gui":
-                break;
-            // switch to gui
-            case "about":
-                break;
-            // reader -> about
-            case "projects":
-                break;
-            // cd projects.js
-            case "blog":
-                break;
-            // cd blog
-            case '!':
-                break;
-            case 'q!':
-                break;
-            case 'clr':
-                break;
+            case "!":
+                return HELP;
+            case "clear":
+            case "clr":
+                dispatch(clearCommandLog());
+                return '';
+            case "gui":      // switch to gui
+            case "about":    // reader -> about
+            case "projects": // cd projects
+            case "blog":     // cd blog
+            case "links":
+            case "quit":
+                return;      // reserved, not implemented yet
             default:
                 return 'unrecognized';
         }
     }, [dispatch, pwd, pwdPath])
-    const checkCmd = (cmd) => {
-        const cmdArr = cmd.split(' ')
-        const cmdKeyword = cmdArr[0];
-        return availableCmds.includes(cmdKeyword);
-    };
+
+    const checkCmd = (cmd) => availableCmds.includes(splitCmd(cmd)[0]);
+
     const createResponse = useCallback((cmd) => {
-        const cmdArr = cmd.split(' ');
-        const cmdKeyword = cmdArr[0];
-        let cmdTarget = null;
-        if (cmdArr.length > 0 && ["cd", "ls", "cat"].includes(cmdKeyword))
-            cmdTarget = cmdArr[1];
+        const [cmdKeyword, cmdArg] = splitCmd(cmd);
+        const cmdTarget = TARGET_CMDS.includes(cmdKeyword) ? cmdArg : null;
         return cmdSwitch(cmdKeyword, cmdTarget)
     }, [cmdSwitch])
 
     const constructCmdObj = useCallback((command, good) => {
         let response = '';
         if (!good)
-            response = 'is not a recognized command. Type /h or ! for help';
+            response = 'is not a recognized command. Type help or ! for help';
         if (command !== '\n' && good)
             response = createResponse(command);
 

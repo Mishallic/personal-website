@@ -3,10 +3,13 @@ export const availableCmds = [
     "cd",
     "ls",
     "cat",
-    "catnt",
+    "close",
+    "clear",
+    "clr",
 
     "quit",
     "help",
+    "!",
     "gui",
 
     "about",

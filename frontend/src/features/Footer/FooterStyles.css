@@ -1,16 +1,18 @@
-.root {
-    color:#999;
-    background:#3d3d3d;
-    z-index: 0;
-    height: 4vh;
-    max-width:100%;
+.footerRoot {
+    color: #999;
+    background: #3d3d3d;
+    flex: 0 0 auto;
+    min-height: 4vh;
+    max-width: 100%;
 }
+
 .footerItems {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
+
 .footerItem {
     float: left;
 }

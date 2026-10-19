@@ -1,6 +1,6 @@
 .cliRoot {
     background: #111;
-    overflow-y: hidden;
+    overflow-y: auto;
     height: 100%;
     width: 100%;
     padding: 4px;
@@ -17,22 +17,76 @@
     color: #f48020;
     margin-right: 10px;
     font-weight: 600;
+    white-space: nowrap;
+}
+
+.cliInputWrap {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .interactiveLineTextarea {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     background: none;
     color: white;
     outline: none;
     border: none;
-    caret-color: #f48020;
+    caret-color: transparent; /* the cursor bar below replaces the native caret */
     font-size: 14px;
     font-weight: 100;
+    line-height: 1.5;
+}
+
+/* Terminal-style cursor: an invisible copy of the text up to the caret pushes the bar into place. */
+.cursorTrack {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    white-space: pre;
+    font-size: 14px;
+    font-weight: 100;
+    line-height: 1.5;
+}
+
+.cursorMeasure {
+    visibility: hidden;
+}
+
+.cursorBar {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.15em;
+    box-sizing: border-box;
+    border: 1px solid #f48020;
+}
+
+.cursorBlink {
+    background: #f48020;
+    animation: cliCursorBlink 1s steps(1) infinite;
+}
+
+@keyframes cliCursorBlink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cursorBlink { animation: none; }
 }
 
 .logLineMainText {
     color: #f48020;
     margin-right: 10px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .logLineTextarea {
@@ -40,9 +94,10 @@
     color: white;
     outline: none;
     border: none;
-    caret-color: #f48020;
     font-size: 14px;
     font-weight: 100;
+    line-height: 1.5;
+    word-break: break-word;
 }
 
 .cliLog {
@@ -51,4 +106,5 @@
 
 .logResponse {
     font-size: 12px;
+    word-break: break-word;
 }

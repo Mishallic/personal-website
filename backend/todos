@@ -1,2 +1,2 @@
-manage envirooments
-models & controllers ?
+manage envirooments [done] (config/index.js validates env, .env.<NODE_ENV> overrides .env, see .example.env)
+models & controllers ? [done] (models/ query a mysql2 pool with parameters, controllers/ validate and answer, routes/ only wire them)
