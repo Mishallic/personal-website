@@ -1,4 +1,4 @@
-import {act, render, screen, fireEvent, waitFor} from '@testing-library/react';
+import {act, render, screen, fireEvent, waitFor, within} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
 import mainReducer from './store/main/mainSlice';
@@ -139,7 +139,12 @@ test('GUI Version opens the desktop, which browses the same tree, and Terminal r
     await click(screen.getByRole('button', {name: 'close portfolio - Text Editor'}));
     expect(screen.queryByTestId('markdown')).not.toBeInTheDocument();
 
-    await click(screen.getByRole('button', {name: 'About'}));
+    const dock = within(screen.getByRole('navigation', {name: 'dock'}));
+    await click(dock.getByRole('button', {name: 'About'}));
+    expect(screen.getByTestId('markdown')).toHaveTextContent('Mishal AlShomary');
+    await click(screen.getByRole('button', {name: 'close about - Text Editor'}));
+    const desktopIcons = within(screen.getByTestId('desktop-icons'));
+    await click(desktopIcons.getByRole('button', {name: 'About'}));
     expect(screen.getByTestId('markdown')).toHaveTextContent('Mishal AlShomary');
     await click(screen.getByRole('button', {name: 'Terminal'}));
     expect(screen.getByRole('textbox', {name: 'command'})).toBeInTheDocument();

@@ -4,7 +4,7 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background: radial-gradient(circle at 78% 22%, #772953 0, #4a1038 35%, #2c001e 70%, #1b0012 100%);
+    background: #04100b;
     color: #f6f5f4;
     font-family: Ubuntu, 'Segoe UI', Roboto, system-ui, sans-serif;
     font-size: 14px;
@@ -72,12 +72,82 @@
     left: 68px;
     right: 0;
     bottom: 0;
+    z-index: 1;
 }
 
-.desktopIcon {
+/* Wallpaper: Rubick poster with his spells as faint code. */
+.wallpaper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: linear-gradient(160deg, #04100b 0%, #0a2b20 40%, #0f3f2d 62%, #04100b 100%);
+}
+.wallpaperGlow {
+    position: absolute;
+    right: -12%;
+    bottom: -25%;
+    width: 75%;
+    height: 130%;
+    background: radial-gradient(ellipse at center, rgba(70, 230, 150, 0.38) 0%, rgba(70, 230, 150, 0.1) 35%, transparent 65%);
+}
+.wallpaperCode {
+    position: absolute;
+    left: 17%;
+    top: 7%;
+    margin: 0;
+    font: 13px/1.75 'Azeret Mono', monospace;
+    color: rgba(140, 255, 190, 0.14);
+    white-space: pre;
+}
+.wallpaperCode.second { left: 38%; top: 44%; color: rgba(140, 255, 190, 0.08); }
+.wallpaperHero {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 96%;
+    max-width: 52%;
+    object-fit: contain;
+    object-position: right bottom;
+    filter: drop-shadow(0 0 40px rgba(80, 255, 170, 0.35)) drop-shadow(0 24px 24px rgba(0, 0, 0, 0.6));
+}
+.wallpaperTitle {
+    position: absolute;
+    left: 7%;
+    bottom: 9%;
+    font-weight: 700;
+    font-size: clamp(44px, 7.5vw, 104px);
+    letter-spacing: 0.14em;
+    line-height: 1;
+    color: #e8d9a0;
+    text-shadow: 0 0 30px rgba(80, 255, 170, 0.35), 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+.wallpaperTitle span {
+    display: block;
+    margin-top: 12px;
+    font: 500 clamp(11px, 1.1vw, 15px)/1.4 'Azeret Mono', monospace;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(140, 255, 190, 0.8);
+    text-shadow: none;
+}
+.wallpaperCredit {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.desktopIcons {
     position: absolute;
     top: 16px;
     left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.desktopIcon {
     width: 84px;
     background: none;
     border: none;
@@ -215,7 +285,12 @@
     .dock { width: 56px; gap: 6px; }
     .dockItem { width: 42px; height: 42px; }
     .desktopArea { left: 56px; }
-    .desktopIcon { display: none; }
+    .desktopIcons { display: none; }
+    .wallpaperCode, .wallpaperCode.second { display: none; }
+    .wallpaperHero { max-width: 95%; height: 62%; right: -8%; bottom: 14%; }
+    .wallpaperTitle { left: 70px; right: 12px; bottom: 28px; font-size: 34px; letter-spacing: 0.1em; }
+    .wallpaperTitle span { font-size: 9px; letter-spacing: 0.14em; margin-top: 8px; }
+    .wallpaperCredit { bottom: 4px; right: 6px; font-size: 9px; }
     .filesWindow, .editorWindow { left: 2%; top: 3%; width: 96%; height: 92%; }
     .filesSidebar { width: 110px; }
     .topBarActivities { display: none; }
