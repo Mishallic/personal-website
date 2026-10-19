@@ -181,7 +181,7 @@ test('the footer About and the readme file describe this site', async () => {
     await renderApp();
     fireEvent.click(screen.getByText('About'));
     expect(screen.getByTestId('markdown')).toHaveTextContent('terminal interface');
-    await type('quit');
+    await click(screen.getByRole('button', {name: 'close reader'}));
     expect(screen.queryByTestId('markdown')).not.toBeInTheDocument();
     await type('cat readme');
     expect(screen.getByTestId('markdown')).toHaveTextContent('github.com/Mishallic/personal-website');

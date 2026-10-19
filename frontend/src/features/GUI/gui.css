@@ -263,11 +263,17 @@
 .fileName { font-size: 12px; color: #2e2e2e; text-align: center; word-break: break-word; }
 .emptyFolder { grid-column: 1 / -1; color: #888; text-align: center; margin-top: 40px; }
 
-.editorBody { padding: 16px 28px; line-height: 1.55; }
-.editorBody a { color: #0b66c3; }
-.editorBody img, .editorBody pre { max-width: 100%; overflow: auto; }
-.editorBody table { border-collapse: collapse; }
-.editorBody th, .editorBody td { border: 1px solid #ccc; padding: 4px 8px; }
+.editorBody { padding: 22px 32px 40px; }
+/* Light variant of the shared reading typography. */
+.editorBody .prose {
+    --prose-fg: #2e2e2e;
+    --prose-heading: #141414;
+    --prose-muted: #6b6b6b;
+    --prose-link: #0b66c3;
+    --prose-code-bg: rgba(0, 0, 0, 0.06);
+    --prose-pre-bg: #f1f0ef;
+    --prose-border: rgba(0, 0, 0, 0.12);
+}
 
 @media (max-width: 768px) {
     .dock { width: 44px; gap: 6px; }
