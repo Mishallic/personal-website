@@ -9,9 +9,10 @@ A portfolio with a terminal interface. Type `help` in the prompt to see the comm
 
 ## Content
 
-`projects` lists the repositories pinned on the GitHub profile. They are bundled with the frontend in
-`frontend/src/content/projects.json` so the site works without a database; rows from the `project`
-table are merged over them at runtime (same name: the database wins). Refresh the bundled list with:
+- `about` and `links` are markdown strings in `frontend/src/content/about.js` and `links.js`.
+- `projects` lists the repositories pinned on the GitHub profile. They are bundled with the frontend in
+  `frontend/src/content/projects.json` so the site works without a database; rows from the `project`
+  table are merged over them at runtime (same name: the database wins). Refresh the bundled list with:
 
 ```sh
 GITHUB_TOKEN=<token> node scripts/pinned-projects.js Mishallic

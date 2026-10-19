@@ -1,8 +1,6 @@
 import {memo} from "react";
 
-const TYPE_LABEL = {dir: 'folder', file: 'file'};
-
-// A response is plain text, a list of words, or a directory listing ({kind: 'entries', items}).
+// A response is plain text, a list of words, a directory listing or the help table.
 const Response = ({response}) => {
     if (!response) return null;
     if (Array.isArray(response)) return <div className='logResponse'> {response.join(' ')}</div>;
@@ -10,11 +8,20 @@ const Response = ({response}) => {
         return (
             <div className='logResponse lsList'>
                 {response.items.map(({name, type}) => (
-                    <div key={name} className='lsItem'>
-                        <span className='lsType'>{TYPE_LABEL[type] || type}</span>
-                        <span className={`lsName ${type}`}>{name}</span>
+                    <span key={name} className={`lsName ${type}`}>{name}</span>
+                ))}
+            </div>
+        );
+    if (response.kind === 'help')
+        return (
+            <div className='logResponse helpList'>
+                {response.items.map(({usage, description}) => (
+                    <div key={usage} className='helpItem'>
+                        <span className='helpUsage'>{usage}</span>
+                        <span className='helpDescription'>{description}</span>
                     </div>
                 ))}
+                {response.note && <div className='helpNote'>{response.note}</div>}
             </div>
         );
     return <div className='logResponse'> {response}</div>;

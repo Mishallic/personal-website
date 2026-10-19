@@ -109,29 +109,43 @@
     word-break: break-word;
 }
 
-/* Directory listing: one entry per line with its type. */
+/* Directory listing, ubuntu style: names in a row, folders bold blue, files plain. */
 .lsList {
     display: flex;
-    flex-direction: column;
-    gap: 1px;
-    padding-left: 4px;
-}
-
-.lsItem {
-    display: flex;
-    gap: 12px;
-}
-
-.lsType {
-    color: #999;
-    flex: 0 0 6ch;
+    flex-wrap: wrap;
+    gap: 2px 2ch;
+    padding-left: 2px;
 }
 
 .lsName.dir {
-    color: #62b0ff;
-    font-weight: 500;
+    color: #729fcf;
+    font-weight: 700;
 }
 
 .lsName.file {
     color: white;
+}
+
+/* help: usage column and a short description per command. */
+.helpList {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 2px;
+}
+
+.helpItem {
+    display: flex;
+    gap: 12px;
+}
+
+.helpUsage {
+    flex: 0 0 11ch;
+    color: #f48020;
+    white-space: nowrap;
+}
+
+.helpNote {
+    margin-top: 6px;
+    color: #999;
 }
