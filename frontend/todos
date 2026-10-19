@@ -1,27 +1,27 @@
-issue: log rerender on input
-issue: cant hold highlight
-enhancement: fix styling
-feature: cursor bar
+issue: log rerender on input [done]
+issue: cant hold highlight [done]
+enhancement: fix styling [done] (input width, panel layout, reader scroll, class name clashes)
+feature: cursor bar [done]
 feature: auto complete on tab [done]
 feature: log history [done]
 
-enhancement: make log history a queue
-enhancement: tab checks command to file type
+enhancement: make log history a queue [done] (bounded FIFO in store, survives clear)
+enhancement: tab checks command to file type [done]
 
 ## modify structure to source from db [done]
 ## structure by entity not assets [done]
 ## add & read & render markdown from db [done]
 
-### file type dirty fix to be enhanced
-### project/blog column name identifier (about/content) CMDPROCESSOR L61
-### add clear command screen cmd / shortcut if possible
-### double check responsivity
+### file type dirty fix to be enhanced [done] (type derived from parent child_type, store/main/entries.js)
+### project/blog column name identifier (about/content) CMDPROCESSOR L61 [done] (FILE_CONTENT_COLUMNS in store/structure.js)
+### add clear command screen cmd / shortcut if possible [done]
+### double check responsivity [done] (panels stack under 768px)
 
 
 
 
-prepare for content for blog
-psuedo complete projects
+prepare for content for blog (open: needs real posts in the blog table)
+psuedo complete projects (open: needs real rows in the project table)
 
 
 

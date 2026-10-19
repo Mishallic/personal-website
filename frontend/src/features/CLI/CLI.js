@@ -9,12 +9,26 @@ import {
     resetLogHistoryIndex, suggestionIndexIncrement, suggestionIndexReset
 } from "../../store/main/mainSlice";
 
-const CLI = ({log, logHistoryIndex}) => {
+const CLI = ({log}) => {
     const dispatch = useDispatch();
     const [activeText, setActiveText] = useState('');
+    const [caretPos, setCaretPos] = useState(0);
+    const [focused, setFocused] = useState(true);
     const textareaRef = useRef();
-    const {pwdPath, pwd, suggestionIndex} = useSelector(state => state.main);
-    let pwdPathUser = pwdPath.replace('root', 'mishal-alshomary');
+    const draftRef = useRef(''); // what was being typed before browsing the history
+    const pwdPath = useSelector(state => state.main.pwdPath);
+    const pwd = useSelector(state => state.main.pwd);
+    const suggestionIndex = useSelector(state => state.main.suggestionIndex);
+    const cmdHistory = useSelector(state => state.main.cmdHistory);
+    const logHistoryIndex = useSelector(state => state.main.logHistoryIndex);
+    const pwdPathUser = pwdPath.replace('root', 'mishal-alshomary');
+
+    // The custom cursor bar follows the real caret of the (otherwise caret-less) input.
+    const syncCaret = () => setCaretPos(textareaRef.current?.selectionStart ?? 0);
+    useEffect(() => {
+        setCaretPos(textareaRef.current?.selectionStart ?? 0);
+    }, [activeText]);
+
     const activeTextChangeHandler = ({target}) => {
         const valueArr = target.value.split(' ');
         const mainCmdChanged = !['cd', 'ls', 'cat'].includes(valueArr[0]);
@@ -27,16 +41,19 @@ const CLI = ({log, logHistoryIndex}) => {
         let {value} = target;
         if (['ArrowUp', 'ArrowDown'].includes(key)) {
             e.preventDefault();
-            handleArrowKeys(key)
+            handleArrowKeys(key);
+            return;
         }
         if (key === 'Tab') {
             e.preventDefault();
             handleTabKey(value);
+            return;
         }
         if (key !== 'Enter') return;
-        if (key === 'Enter' && value === '') value = '\n';
+        if (value === '') value = '\n';
         dispatch(changeCMD(value));
         dispatch(resetLogHistoryIndex());
+        draftRef.current = '';
         setActiveText('');
     }
 
@@ -45,6 +62,15 @@ const CLI = ({log, logHistoryIndex}) => {
         const cmdTarget = activeText.split(' ')[1];
         if (['cd', 'cat', 'ls'].includes(mainCMD.trim())) {
             let availableChildren = Object.keys(pwd.children);
+
+            // Only suggest what the command can act on: directories for cd, files for cat.
+            if (mainCMD.trim() === 'cd') {
+                availableChildren = availableChildren.filter(el => pwd.children[el].type === 'dir');
+            } else if (mainCMD.trim() === 'cat') {
+                availableChildren = availableChildren.filter(el => pwd.children[el].type === 'file');
+            }
+            if (!availableChildren.length) return;
+
             if (suggestionIndex === 0 && !availableChildren.includes(cmdTarget)) {
                 let targetChildIndex = availableChildren.findIndex(el => el.includes(cmdTarget));
                 if (targetChildIndex === -1 && !cmdTarget) targetChildIndex = 0;
@@ -67,37 +93,36 @@ const CLI = ({log, logHistoryIndex}) => {
             dispatch(suggestionIndexReset())
     }
 
+    // Browse the command history queue; index 0 is the line being typed, which is kept as a draft.
     const handleArrowKeys = (key) => {
+        const length = cmdHistory.length;
         if (key === "ArrowUp") {
-            try {
-                setActiveText(log[log.length - logHistoryIndex - 1].cmd);
-                dispatch(incrementLogHistoryIndex());
-            } catch (e) {
-                // console.log(e)
-            }
+            if (logHistoryIndex >= length) return;
+            if (logHistoryIndex === 0) draftRef.current = activeText;
+            setActiveText(cmdHistory[length - (logHistoryIndex + 1)]);
+            dispatch(incrementLogHistoryIndex());
         }
         if (key === "ArrowDown") {
-            try {
-                setActiveText(log[log.length - logHistoryIndex + 1].cmd);
-                dispatch(decrementLogHistoryIndex());
-            } catch (e) {
-                // console.log(e)
-            }
+            if (logHistoryIndex === 0) return;
+            const next = logHistoryIndex - 1;
+            setActiveText(next === 0 ? draftRef.current : cmdHistory[length - next]);
+            dispatch(decrementLogHistoryIndex());
         }
     }
 
-    const globalClickHandler = (e) => {
-        textareaRef.current.focus();
+    const globalClickHandler = () => {
+        // A click that ends a text selection must not steal focus, or the highlight is lost before it can be copied.
+        const selection = window.getSelection ? window.getSelection() : null;
+        if (selection && selection.toString().length > 0) return;
+        textareaRef.current?.focus();
     }
 
     useEffect(() => {
         textareaRef.current?.scrollIntoView({behavior: 'auto'})
     }, [log])
 
-
-    const cliRef = useRef();
     return (
-        <div ref={cliRef} className='cliRoot' onClick={globalClickHandler}>
+        <div className='cliRoot' onClick={globalClickHandler}>
             <div className='cliLog'>
                 <Log entries={log}/>
             </div>
@@ -105,16 +130,26 @@ const CLI = ({log, logHistoryIndex}) => {
                 <div className='interactiveLineMainText'>
                     ai:~/ {pwdPathUser}$
                 </div>
-                <div>
+                <div className='cliInputWrap'>
                     <input
                         className='interactiveLineTextarea'
                         onChange={activeTextChangeHandler}
                         onKeyDown={keyHandler}
+                        onKeyUp={syncCaret}
+                        onSelect={syncCaret}
+                        onFocus={() => setFocused(true)}
+                        onBlur={() => setFocused(false)}
                         value={activeText}
                         autoFocus
                         ref={textareaRef}
                         spellCheck={false}
+                        autoComplete='off'
+                        aria-label='command'
                     />
+                    <div className='cursorTrack' aria-hidden='true'>
+                        <span className='cursorMeasure'>{activeText.slice(0, caretPos)}</span>
+                        <span className={focused ? 'cursorBar cursorBlink' : 'cursorBar'}/>
+                    </div>
                 </div>
             </div>
         </div>

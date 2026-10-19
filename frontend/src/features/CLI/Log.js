@@ -1,23 +1,23 @@
-const Log = ({entries}) => {
-    const renderEntries = () => entries.map(({user, cmd, response, time}) => {
-        if (Array.isArray(response))
-            response = response.join(' ');
-        return (
-            <div key={time}>
-                <div className='cliInteractiveLine'>
-                    <div className='logLineMainText'>
-                        ai:~/ {user}$
+import {memo} from "react";
+
+const Log = ({entries}) => (
+    <>
+        {entries.map(({user, cmd, response, time}, i) => {
+            const text = Array.isArray(response) ? response.join(' ') : response;
+            return (
+                <div key={`${time}-${i}`}>
+                    <div className='cliInteractiveLine'>
+                        <div className='logLineMainText'>
+                            ai:~/ {user}$
+                        </div>
+                        <div className='logLineTextarea'>{cmd}</div>
                     </div>
-                    <div className='logLineTextarea'>{cmd}</div>
+                    {text && <div className='logResponse'> {text}</div>}
                 </div>
-                {response && <div className='logResponse'> {response}</div>}
-            </div>
-        )
-    });
+            );
+        })}
+    </>
+);
 
-    return (
-        <> {renderEntries()}</>
-    )
-}
-
-export default Log;
+// Memoised: the CLI re-renders on every keystroke, the log only changes when a command is submitted.
+export default memo(Log);
