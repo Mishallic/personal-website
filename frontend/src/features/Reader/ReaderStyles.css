@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    background: #222;
+    background: var(--bg-reader);
     padding: 15px;
     box-sizing: border-box;
     flex-direction: column;
@@ -19,4 +19,8 @@
 .readerRoot pre {
     max-width: 100%;
     overflow: auto;
+}
+
+.readerRoot a {
+    color: var(--accent);
 }

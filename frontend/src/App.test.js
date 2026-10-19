@@ -121,6 +121,16 @@ test('ls tells folders from files by style, without labels', async () => {
     expect(screen.queryByText('folder')).not.toBeInTheDocument();
 });
 
+test('the footer About and the readme file describe this site', async () => {
+    await renderApp();
+    fireEvent.click(screen.getByText('About'));
+    expect(screen.getByTestId('markdown')).toHaveTextContent('terminal interface');
+    await type('quit');
+    expect(screen.queryByTestId('markdown')).not.toBeInTheDocument();
+    await type('cat readme');
+    expect(screen.getByTestId('markdown')).toHaveTextContent('github.com/Mishallic/personal-website');
+});
+
 test('about, links, projects, blog and quit work as shortcuts from anywhere', async () => {
     const store = await renderApp();
     await type('cd projects');

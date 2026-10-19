@@ -1,3 +1,11 @@
+:root {
+    --accent: #4fc1ff;   /* main colour: prompt, cursor, help usage, links */
+    --dir: #8ce99a;      /* folders in ls */
+    --muted: #999;
+    --bg: #111;
+    --bg-reader: #222;
+}
+
 body {
     margin: 0;
     font-family: 'Azeret Mono', monospace;
