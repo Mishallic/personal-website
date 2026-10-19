@@ -4,13 +4,12 @@ export const availableCmds = [
     "ls",
     "cat",
     "close",
+    "quit",
     "clear",
     "clr",
 
-    "quit",
     "help",
     "!",
-    "gui",
 
     "about",
     "projects",

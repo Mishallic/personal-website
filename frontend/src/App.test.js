@@ -49,7 +49,8 @@ test('renders the prompt and answers help', async () => {
     await renderApp();
     expect(screen.getByText(/mishal-alshomary\$/)).toBeInTheDocument();
     await type('help');
-    expect(screen.getByText(/Available commands/)).toBeInTheDocument();
+    expect(screen.getByText('cat <file>')).toBeInTheDocument();
+    expect(screen.getByText('open a file in the reader')).toBeInTheDocument();
 });
 
 test('lists and reads db-backed entries whatever column holds their body', async () => {
@@ -88,11 +89,11 @@ test('clicking the terminal keeps an existing text selection', async () => {
     await type('help');
     act(() => input().blur());
     const getSelection = window.getSelection;
-    window.getSelection = () => ({toString: () => 'Available commands'});
-    fireEvent.click(screen.getByText(/Available commands/));
+    window.getSelection = () => ({toString: () => 'open a file'});
+    fireEvent.click(screen.getByText('open a file in the reader'));
     expect(input()).not.toHaveFocus();
     window.getSelection = () => ({toString: () => ''});
-    fireEvent.click(screen.getByText(/Available commands/));
+    fireEvent.click(screen.getByText('open a file in the reader'));
     expect(input()).toHaveFocus();
     window.getSelection = getSelection;
 });
@@ -110,11 +111,28 @@ test('pinned github projects are readable without a backend', async () => {
     expect(screen.getByTestId('markdown')).toHaveTextContent(first.url);
 });
 
-test('ls labels every item as a folder or a file', async () => {
+test('ls tells folders from files by style, without labels', async () => {
     await renderApp();
     await type('ls');
-    expect(screen.getByText('projects').previousSibling).toHaveTextContent('folder');
-    expect(screen.getByText('blog').previousSibling).toHaveTextContent('folder');
-    expect(screen.getByText('about').previousSibling).toHaveTextContent('file');
-    expect(screen.getByText('links').previousSibling).toHaveTextContent('file');
+    expect(screen.getByText('projects')).toHaveClass('lsName', 'dir');
+    expect(screen.getByText('blog')).toHaveClass('lsName', 'dir');
+    expect(screen.getByText('about')).toHaveClass('lsName', 'file');
+    expect(screen.getByText('links')).toHaveClass('lsName', 'file');
+    expect(screen.queryByText('folder')).not.toBeInTheDocument();
+});
+
+test('about, links, projects, blog and quit work as shortcuts from anywhere', async () => {
+    const store = await renderApp();
+    await type('cd projects');
+    await type('about');
+    expect(screen.getByTestId('markdown')).toHaveTextContent('Mishal AlShomary');
+    await type('links');
+    expect(screen.getByTestId('markdown')).toHaveTextContent('https://github.com/Mishallic');
+    expect(screen.getByTestId('markdown')).toHaveTextContent('linkedin.com/in/mishal-alshomary');
+    await type('quit');
+    expect(screen.queryByTestId('markdown')).not.toBeInTheDocument();
+    await type('blog');
+    expect(store.getState().main.pwdPath).toBe('root/blog');
+    await type('projects');
+    expect(store.getState().main.pwdPath).toBe('root/projects');
 });

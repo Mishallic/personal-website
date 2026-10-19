@@ -14,7 +14,19 @@ import {
     clearCommandLog
 } from "../../store/main/mainSlice";
 
-const HELP = "Available commands: cd, ls, cat, close, clear, about, projects, blog, links, help, quit";
+const HELP_ITEMS = [
+    {usage: 'ls [dir]', description: 'list the current directory, or dir'},
+    {usage: 'cd <dir>', description: 'enter a directory; cd .. goes up, cd alone returns to the root'},
+    {usage: 'cat <file>', description: 'open a file in the reader'},
+    {usage: 'close', description: 'close the reader (also: quit)'},
+    {usage: 'clear', description: 'clear the screen (also: clr)'},
+    {usage: 'about', description: 'who I am and what I do (cat about)'},
+    {usage: 'projects', description: 'my projects (cd projects)'},
+    {usage: 'blog', description: 'my blog (cd blog)'},
+    {usage: 'links', description: 'where to find me (cat links)'},
+    {usage: 'help', description: 'this list (also: !)'},
+];
+const HELP_NOTE = 'Tab completes names, ↑ and ↓ browse the command history.';
 const TARGET_CMDS = ["cd", "ls", "cat"];
 const splitCmd = (cmd) => cmd.trim().split(/\s+/);
 
@@ -30,6 +42,7 @@ const CMDProcessor = ({children}) => {
     const newCmd = useSelector(state => state.main.newCmd);
     const pwd = useSelector(state => state.main.pwd);
     const pwdPath = useSelector(state => state.main.pwdPath);
+    const dirRoot = useSelector(state => state.main.dirRoot);
 
     const cmdSwitch = useCallback((cmdKeyword, cmdTarget) => {
         const entries = pwd.children || {};
@@ -62,26 +75,28 @@ const CMDProcessor = ({children}) => {
                 dispatch(openReader(cmdTarget, fileContent(entries[cmdTarget])));
                 return;
             case "close":
+            case "quit":
                 dispatch(closeReader());
                 return;
             case "help":
             case "!":
-                return HELP;
+                return {kind: 'help', items: HELP_ITEMS, note: HELP_NOTE};
             case "clear":
             case "clr":
                 dispatch(clearCommandLog());
                 return '';
-            case "gui":      // switch to gui
-            case "about":    // reader -> about
-            case "projects": // cd projects
-            case "blog":     // cd blog
-            case "links":
-            case "quit":
-                return;      // reserved, not implemented yet
+            case "about":    // shortcut for `cat about`, from anywhere
+            case "links":    // shortcut for `cat links`, from anywhere
+                dispatch(openReader(cmdKeyword, fileContent(dirRoot.children[cmdKeyword])));
+                return;
+            case "projects": // shortcut for `cd projects`, from anywhere
+            case "blog":     // shortcut for `cd blog`, from anywhere
+                dispatch(changePath('root/' + cmdKeyword));
+                return;
             default:
                 return 'unrecognized';
         }
-    }, [dispatch, pwd, pwdPath])
+    }, [dispatch, pwd, pwdPath, dirRoot])
 
     const checkCmd = (cmd) => availableCmds.includes(splitCmd(cmd)[0]);
 
