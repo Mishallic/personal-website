@@ -3,6 +3,7 @@ import {Provider} from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
 import mainReducer from './store/main/mainSlice';
 import App from './App';
+import pinned from './content/projects.json';
 
 // react-markdown and its remark plugins ship as ESM only, which CRA's jest does not transform.
 jest.mock('react-markdown', () => ({children}) =>
@@ -55,7 +56,7 @@ test('lists and reads db-backed entries whatever column holds their body', async
     await renderApp();
     await type('cd projects');
     await type('ls');
-    expect(screen.getByText('portfolio')).toBeInTheDocument();
+    expect(screen.getByText(/portfolio/)).toBeInTheDocument();
     await type('cat portfolio');
     expect(screen.getByTestId('markdown')).toHaveTextContent('terminal styled site');
 
@@ -94,4 +95,17 @@ test('clicking the terminal keeps an existing text selection', async () => {
     fireEvent.click(screen.getByText(/Available commands/));
     expect(input()).toHaveFocus();
     window.getSelection = getSelection;
+});
+
+test('pinned github projects are readable without a backend', async () => {
+    global.fetch = jest.fn(() => Promise.reject(new Error('offline')));
+    const store = configureStore({reducer: {main: mainReducer}});
+    render(<Provider store={store}><App/></Provider>);
+    const first = pinned[0];
+    expect(pinned.length).toBeGreaterThan(0);
+    await type('cd projects');
+    await type('ls');
+    expect(screen.getByText(new RegExp(first.name))).toBeInTheDocument();
+    await type(`cat ${first.name}`);
+    expect(screen.getByTestId('markdown')).toHaveTextContent(first.url);
 });
