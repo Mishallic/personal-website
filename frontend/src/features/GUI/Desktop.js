@@ -65,18 +65,18 @@ const Desktop = () => {
             <nav className='dock' aria-label='dock'>
                 {dock.map(item => (
                     <button key={item.id} className={`dockItem ${item.id}`} title={item.label} aria-label={item.label} onClick={item.action}>
-                        <Icon name={item.icon} size={26}/>
+                        <Icon name={item.icon} size={20}/>
                     </button>
                 ))}
             </nav>
             <main className='desktopArea'>
                 <div className='desktopIcons' data-testid='desktop-icons'>
                     <button className='desktopIcon' onClick={() => openFolder('root')}>
-                        <Icon name='home' size={40}/>
+                        <Icon name='home' size={28}/>
                         <span>Home</span>
                     </button>
                     <button className='desktopIcon' onClick={() => openFile('about', dirRoot.children.about)}>
-                        <Icon name='user' size={40}/>
+                        <Icon name='user' size={28}/>
                         <span>About</span>
                     </button>
                 </div>

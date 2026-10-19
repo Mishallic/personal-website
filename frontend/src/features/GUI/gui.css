@@ -35,21 +35,21 @@
     top: 30px;
     bottom: 0;
     left: 0;
-    width: 68px;
+    width: 52px;
     background: rgba(29, 29, 29, 0.88);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 12px 0;
+    gap: 8px;
+    padding: 10px 0;
     z-index: 3;
 }
 
 .dockItem {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     border: none;
-    border-radius: 12px;
+    border-radius: 9px;
     color: white;
     cursor: pointer;
     display: flex;
@@ -69,7 +69,7 @@
 .desktopArea {
     position: absolute;
     top: 30px;
-    left: 68px;
+    left: 52px;
     right: 0;
     bottom: 0;
     z-index: 1;
@@ -127,26 +127,27 @@
 
 .desktopIcons {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 12px;
+    left: 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
 }
 
 .desktopIcon {
-    width: 84px;
+    width: 64px;
     background: none;
     border: none;
     color: #f6f5f4;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 8px 4px;
+    gap: 3px;
+    padding: 6px 2px;
     border-radius: 8px;
     cursor: pointer;
     font: inherit;
+    font-size: 12px;
 }
 .desktopIcon:hover { background: rgba(255, 255, 255, 0.12); }
 
@@ -269,12 +270,12 @@
 .editorBody th, .editorBody td { border: 1px solid #ccc; padding: 4px 8px; }
 
 @media (max-width: 768px) {
-    .dock { width: 56px; gap: 6px; }
-    .dockItem { width: 42px; height: 42px; }
-    .desktopArea { left: 56px; }
+    .dock { width: 44px; gap: 6px; }
+    .dockItem { width: 32px; height: 32px; }
+    .desktopArea { left: 44px; }
     .desktopIcons { display: none; }
     .wallpaperCode { display: none; }
-    .wallpaperTagline { left: 70px; right: 12px; bottom: 28px; gap: 8px; font-size: 9px; letter-spacing: 0.12em; }
+    .wallpaperTagline { left: 56px; right: 12px; bottom: 28px; gap: 8px; font-size: 9px; letter-spacing: 0.12em; }
     .wallpaperCredit { bottom: 4px; right: 6px; font-size: 9px; }
     .filesWindow, .editorWindow { left: 2%; top: 3%; width: 96%; height: 92%; }
     .filesSidebar { width: 110px; }
